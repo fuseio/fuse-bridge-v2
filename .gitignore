@@ -110,5 +110,6 @@ package-lock.json
 cache/
 artifacts/
 .openzeppelin/
+typechain-types/
 
 
