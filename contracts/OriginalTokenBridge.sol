@@ -25,7 +25,7 @@ contract OriginalTokenBridge is TokenBridgeBase {
     uint16 public remoteChainId;
 
     /// @notice Address of the wrapped native gas token (e.g. WETH, WBNB, WMATIC)
-    address public immutable weth;
+    address public weth;
 
     event SendToken(address token, address from, address to, uint amount);
     event ReceiveToken(address token, address to, uint amount);
@@ -33,8 +33,9 @@ contract OriginalTokenBridge is TokenBridgeBase {
     event RegisterToken(address token);
     event WithdrawFee(address indexed token, address to, uint amount);
 
-    constructor(address _endpoint, uint16 _remoteChainId, address _weth) TokenBridgeBase(_endpoint) {
+    function initialize(address _endpoint, uint16 _remoteChainId, address _weth) external initializer {
         require(_weth != address(0), "OriginalTokenBridge: invalid WETH address");
+        __TokenBridgeBase_init(_endpoint);
         remoteChainId = _remoteChainId;
         weth = _weth;
     }
@@ -74,7 +75,7 @@ contract OriginalTokenBridge is TokenBridgeBase {
     /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
     function bridge(address token, uint amountLD, address to, LzLib.CallParams calldata callParams, bytes memory adapterParams) external payable nonReentrant {
         require(supportedTokens[token], "OriginalTokenBridge: token is not supported");
-   
+
         // Supports tokens with transfer fee
         uint balanceBefore = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransferFrom(msg.sender, address(this), amountLD);
