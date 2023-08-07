@@ -31,7 +31,9 @@ contract WrappedTokenBridge is TokenBridgeBase {
     event RegisterToken(address localToken, uint16 remoteChainId, address remoteToken);
     event SetWithdrawalFeeBps(uint16 withdrawalFeeBps);
 
-    constructor(address _endpoint) TokenBridgeBase(_endpoint) {}
+    function initialize(address _endpoint) external initializer {
+        __TokenBridgeBase_init(_endpoint);
+    }
 
     function registerToken(address localToken, uint16 remoteChainId, address remoteToken) external onlyOwner {
         require(localToken != address(0), "WrappedTokenBridge: invalid local token");

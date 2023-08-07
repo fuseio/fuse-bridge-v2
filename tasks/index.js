@@ -59,3 +59,5 @@ task("transferOwnership", "transfers bridges ownership", require("./transferOwne
 task("verifyContract", "verifies a deployed contract", require("./verifyContract"))
 	.addParam("contract", "contract name")
 // npx hardhat verifyContract --contract "OriginalTokenBridge" --network "ethereum"
+
+task("deployProxy", "deploys Proxy contract", require("./deployProxy"))

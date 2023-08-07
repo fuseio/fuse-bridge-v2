@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {NonblockingLzApp} from "@layerzerolabs/solidity-examples/contracts/lzApp/NonblockingLzApp.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @dev An abstract contract containing a common functionality used by OriginalTokenBridge and WrappedTokenBridge
-abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuard {
+abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuardUpgradeable, UUPSUpgradeable {
     /// @notice A packet type used to identify messages requesting minting of wrapped tokens
     uint8 public constant PT_MINT = 0;
 
@@ -16,7 +17,9 @@ abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuard {
 
     event SetUseCustomAdapterParams(bool useCustomAdapterParams);
 
-    constructor(address _endpoint) NonblockingLzApp(_endpoint) {}
+    function __TokenBridgeBase_init(address _endpoint) internal onlyInitializing {
+        __NonblockingLzApp_init(_endpoint);
+    }
 
     /// @notice Sets the `useCustomAdapterParams` flag indicating whether the contract uses custom adapter parameters or the default ones
     /// @dev Can be called only by the bridge owner
@@ -36,4 +39,6 @@ abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuard {
 
     /// @dev Overrides the renounce ownership logic inherited from openZeppelin `Ownable`
     function renounceOwnership() public override onlyOwner {}
+
+    function _authorizeUpgrade(address newImplemantation) internal override onlyOwner {}
 }
