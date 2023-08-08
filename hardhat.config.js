@@ -6,7 +6,6 @@ require("solidity-coverage");
 require('hardhat-gas-reporter');
 require('hardhat-deploy');
 require('hardhat-deploy-ethers');
-require('@openzeppelin/hardhat-upgrades');
 require('./tasks');
 
 // This is a sample Hardhat task. To learn how to create your own go to
