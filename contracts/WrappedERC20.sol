@@ -68,6 +68,7 @@ contract WrappedERC20 is ERC20, ERC20Permit, Ownable {
     function upgradeBridge(address _newBridge) external virtual onlyOwner {
         require(_newBridge != address(0), "WrappedERC20: invalid bridge");
         require(_newBridge != currentBridge, "WrappedERC20: same bridge");
+        require(_newBridge != owner(), "WrappedERC20: owner cannot be the bridge");
         currentBridge = _newBridge;
         bridges.push(_newBridge);
     }
