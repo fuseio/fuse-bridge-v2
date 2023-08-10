@@ -1,6 +1,7 @@
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
 const { utils, constants } = require("ethers")
+const { generateKeyPair } = require("crypto")
 
 describe("WrappedERC20", () => {
     const name = "WTEST"
@@ -13,7 +14,8 @@ describe("WrappedERC20", () => {
     let wrappedTokenFactory
 
     beforeEach(async () => {
-        [owner, bridge] = await ethers.getSigners()
+        ;[owner, bridge] = await ethers.getSigners()
+        newBridge = ethers.getSigner()
 
         wrappedTokenFactory = await ethers.getContractFactory("WrappedERC20")
         wrappedToken = await wrappedTokenFactory.deploy(bridge.address, name, symbol, decimals)
@@ -56,4 +58,36 @@ describe("WrappedERC20", () => {
             expect(await wrappedToken.balanceOf(owner.address)).to.be.eq(0)
         })
     })
+
+    describe("upgrade bridge", () => {
+        it("reverts when bridge is addres 0", async () => {
+            await expect(wrappedToken.upgradeBridge(constants.AddressZero)).to.be.revertedWith("WrappedERC20: invalid bridge")
+        })
+
+        it("reverts when new bridge is same as old one", async () => {
+            await expect(wrappedToken.upgradeBridge(bridge.address)).to.be.revertedWith("WrappedERC20: same bridge")
+        })
+
+        it("upgrades bridge", async () => {
+            await wrappedToken.upgradeBridge(newBridge.address)
+            expect(await wrappedToken.currentBridge()).to.be.eq(newBridge.address)
+            expect(await wrappedToken.bridges()).to.be.eq([bridge.address, newBridge.address])
+        })
+    })
+
+    // describe("burn", () => {
+    //     beforeEach(async () => {
+    //         await wrappedToken.connect(bridge).mint(owner.address, amount)
+    //     })
+
+    //     it("reverts when called not by the bridge", async () => {
+    //         await expect(wrappedToken.burn(owner.address, amount)).to.be.revertedWith("WrappedERC20: caller is not the bridge")
+    //     })
+
+    //     it("burns wrapped tokens", async () => {
+    //         await wrappedToken.connect(bridge).burn(owner.address, amount)
+    //         expect(await wrappedToken.totalSupply()).to.be.eq(0)
+    //         expect(await wrappedToken.balanceOf(owner.address)).to.be.eq(0)
+    //     })
+    // })
 })
