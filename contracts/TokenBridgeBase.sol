@@ -2,11 +2,11 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import {NonblockingLzApp} from "@layerzerolabs/solidity-examples/contracts/lzApp/NonblockingLzApp.sol";
+import {NonblockingLzAppUpgradeable} from "@layerzerolabs/solidity-examples/contracts/contracts-upgradable/lzApp/NonblockingLzAppUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @dev An abstract contract containing a common functionality used by OriginalTokenBridge and WrappedTokenBridge
-abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuardUpgradeable, UUPSUpgradeable {
+abstract contract TokenBridgeBase is NonblockingLzAppUpgradeable, ReentrancyGuardUpgradeable, UUPSUpgradeable {
     /// @notice A packet type used to identify messages requesting minting of wrapped tokens
     uint8 public constant PT_MINT = 0;
 
@@ -18,7 +18,7 @@ abstract contract TokenBridgeBase is NonblockingLzApp, ReentrancyGuardUpgradeabl
     event SetUseCustomAdapterParams(bool useCustomAdapterParams);
 
     function __TokenBridgeBase_init(address _endpoint) internal onlyInitializing {
-        __NonblockingLzApp_init(_endpoint);
+        __NonblockingLzAppUpgradeable_init(_endpoint);
     }
 
     /// @notice Sets the `useCustomAdapterParams` flag indicating whether the contract uses custom adapter parameters or the default ones

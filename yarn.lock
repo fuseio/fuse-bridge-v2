@@ -177,11 +177,11 @@
     "js-tokens" "^4.0.0"
 
 "@babel/runtime@^7.4.4", "@babel/runtime@^7.6.3", "@babel/runtime@^7.9.2":
-  "integrity" "sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ=="
-  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.6.tgz"
-  "version" "7.22.6"
+  "integrity" "sha512-21t/fkKLMZI4pqP2wlmsQAWnYW1PDyKyyUV4vCi+B25ydmdaYTKXPwCj0BzSUnZf4seIiYvSA3jcZ3gdsMFkLQ=="
+  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.10.tgz"
+  "version" "7.22.10"
   dependencies:
-    "regenerator-runtime" "^0.13.11"
+    "regenerator-runtime" "^0.14.0"
 
 "@colors/colors@1.5.0":
   "integrity" "sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ=="
@@ -816,6 +816,14 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@layerzerolabs/lz-evm-sdk-v1-0.7@^1.5.14":
+  "integrity" "sha512-YYuEU1SsedZkjLxf9Ur2Pmqtud/EBoWemEJaNxT4VMnGMZ1s8g2ehxraGk4ucRBsHDlVFHm5GHjxcWpxdg5xBw=="
+  "resolved" "https://registry.npmjs.org/@layerzerolabs/lz-evm-sdk-v1-0.7/-/lz-evm-sdk-v1-0.7-1.5.16.tgz"
+  "version" "1.5.16"
+  dependencies:
+    "@openzeppelin/contracts" "3.4.2-solc-0.7"
+    "@openzeppelin/contracts-upgradeable" "3.4.2-solc-0.7"
+
 "@layerzerolabs/prettier-plugin-solidity@^1.0.0-beta.19":
   "integrity" "sha512-LhWUofwoB7iOPlFNwRImsrmgiMaXMnjXB4Ytypgr9n85uuASX+zrIStOrRbvHmgSGgOlaZQ1Gu/ZJLRFpYojBA=="
   "resolved" "https://registry.npmjs.org/@layerzerolabs/prettier-plugin-solidity/-/prettier-plugin-solidity-1.0.0-beta.19.tgz"
@@ -828,17 +836,20 @@
     "solidity-comments-extractor" "^0.0.7"
     "string-width" "^4.2.3"
 
-"@layerzerolabs/solidity-examples@0.0.6":
-  "integrity" "sha512-pVOWcI2A4QYmXixK+CLnkBHFz6+AIVcQemQI5GOfPXDrUcv7wbgKnX1NwYNWynH49BdsvuYDoIS45kQidZYnig=="
-  "resolved" "https://registry.npmjs.org/@layerzerolabs/solidity-examples/-/solidity-examples-0.0.6.tgz"
-  "version" "0.0.6"
+"@layerzerolabs/solidity-examples@^0.0.13":
+  "integrity" "sha512-3qW5CcE1mnYS6jRSoeB4gnuFOjzO2u8tU5l5TyURJuA0ei7hxkqe6zqnCiJ7a9GxI/df58JnlOcEk5IfTn5nSw=="
+  "resolved" "https://registry.npmjs.org/@layerzerolabs/solidity-examples/-/solidity-examples-0.0.13.tgz"
+  "version" "0.0.13"
   dependencies:
+    "@layerzerolabs/lz-evm-sdk-v1-0.7" "^1.5.14"
+    "@openzeppelin-3/contracts" "npm:@openzeppelin/contracts@^3.4.2-solc-0.7"
     "@openzeppelin/contracts" "^4.4.1"
     "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@openzeppelin/hardhat-upgrades" "^1.18.3"
     "@uniswap/v2-core" "^1.0.1"
     "@uniswap/v2-periphery" "^1.1.0-beta.0"
     "dotenv" "^10.0.0"
+    "erc721a" "^4.2.3"
     "hardhat" "^2.8.0"
     "hardhat-contract-sizer" "^2.1.1"
     "hardhat-deploy" "^0.10.5"
@@ -1121,9 +1132,9 @@
     "rustbn.js" "~0.2.0"
 
 "@nomicfoundation/hardhat-chai-matchers@^2.0.1":
-  "integrity" "sha512-qWKndseO8IPt8HiVamgEAutcBOYtX7/O6NPfe7uMNWxY2ywWaiWjDcRFuYYqxrZOMyQZl6ZuiHxbaRNctTUgLw=="
-  "resolved" "https://registry.npmjs.org/@nomicfoundation/hardhat-chai-matchers/-/hardhat-chai-matchers-2.0.1.tgz"
-  "version" "2.0.1"
+  "integrity" "sha512-9Wu9mRtkj0U9ohgXYFbB/RQDa+PcEdyBm2suyEtsJf3PqzZEEjLUZgWnMjlFhATMk/fp3BjmnYVPrwl+gr8oEw=="
+  "resolved" "https://registry.npmjs.org/@nomicfoundation/hardhat-chai-matchers/-/hardhat-chai-matchers-2.0.2.tgz"
+  "version" "2.0.2"
   dependencies:
     "@types/chai-as-promised" "^7.1.3"
     "chai-as-promised" "^7.1.1"
@@ -1200,15 +1211,30 @@
     "@types/sinon-chai" "^3.2.3"
     "@types/web3" "1.0.19"
 
+"@openzeppelin-3/contracts@npm:@openzeppelin/contracts@^3.4.2-solc-0.7":
+  "integrity" "sha512-z0zMCjyhhp4y7XKAcDAi3Vgms4T2PstwBdahiO0+9NaGICQKjynK3wduSRplTgk4LXmoO1yfDGO5RbjKYxtuxA=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-3.4.2.tgz"
+  "version" "3.4.2"
+
 "@openzeppelin/contracts-upgradeable@^4.6.0", "@openzeppelin/contracts-upgradeable@^4.9.3":
   "integrity" "sha512-jjaHAVRMrE4UuZNfDwjlLGDxTHWIOwTJS2ldnc278a0gevfXfPr8hxKEVBGFBE96kl2G3VHDZhUimw/+G3TG2A=="
   "resolved" "https://registry.npmjs.org/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.9.3.tgz"
   "version" "4.9.3"
 
+"@openzeppelin/contracts-upgradeable@3.4.2-solc-0.7":
+  "integrity" "sha512-I5iKKS8U9L1XdSxsNAIBQekN0U9hTgdleoyntIdR7Jy3U/z/NZ/1oUM0v5HnUMrmn/bXLvYL94rBvaLF++Ndnw=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-3.4.2-solc-0.7.tgz"
+  "version" "3.4.2-solc-0.7"
+
 "@openzeppelin/contracts@^4.4.1":
-  "integrity" "sha512-AGuwhRRL+NaKx73WKRNzeCxOCOCxpaqF+kp8TJ89QzAipSwZy/NoflkWaL9bywXFRhIzXt8j38sfF7KBKCPWLw=="
-  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-4.8.0.tgz"
-  "version" "4.8.0"
+  "integrity" "sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-4.9.3.tgz"
+  "version" "4.9.3"
+
+"@openzeppelin/contracts@3.4.2-solc-0.7":
+  "integrity" "sha512-W6QmqgkADuFcTLzHL8vVoNBtkwjvQRpYIAom7KiUNoLKghyx3FgH0GBjt8NRvigV1ZmMOBllvE1By1C+bi8WpA=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-3.4.2-solc-0.7.tgz"
+  "version" "3.4.2-solc-0.7"
 
 "@openzeppelin/defender-base-client@^1.46.0", "@openzeppelin/defender-base-client@^1.47.0":
   "integrity" "sha512-xnopi1tZIh1zY9KF3mo9S2YgMP0I3T11r6jiO1teAw6M0U5Fx2SCjfCVoKV7CLAQGH1VHmAZ7w2CmcEsFvlQng=="
@@ -1234,9 +1260,9 @@
     "proper-lockfile" "^4.1.1"
 
 "@openzeppelin/hardhat-upgrades@^2.1.0":
-  "integrity" "sha512-cHwWbm5YeRde9y37Tcx9o0xc+hE7t+CrxDAdHt+USELW5agi6IaVECpgtVjPhhpfLR8UDJvSggzaP4HAqQhZtQ=="
-  "resolved" "https://registry.npmjs.org/@openzeppelin/hardhat-upgrades/-/hardhat-upgrades-2.1.0.tgz"
-  "version" "2.1.0"
+  "integrity" "sha512-t+tFpgQq3BOeatMzn4XddDMHX4R0hGbj/5FuKF2DkFscbpqEFVARMkrL0a1hX2zIZNz25bVuzB4rlmUA0RWV5w=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/hardhat-upgrades/-/hardhat-upgrades-2.1.1.tgz"
+  "version" "2.1.1"
   dependencies:
     "@openzeppelin/defender-base-client" "^1.47.0"
     "@openzeppelin/platform-deploy-client" "^0.9.0"
@@ -1556,10 +1582,10 @@
   dependencies:
     "defer-to-connect" "^2.0.1"
 
-"@truffle/abi-utils@^1.0.1":
-  "integrity" "sha512-ZQUY3XUxEPdqxNaoXsOqF0spTtb6f5RNlnN4MUrVsJ64sOh0FJsY7rxZiUI3khfePmNh4i2qcJrQlKT36YcWUA=="
-  "resolved" "https://registry.npmjs.org/@truffle/abi-utils/-/abi-utils-1.0.1.tgz"
-  "version" "1.0.1"
+"@truffle/abi-utils@^1.0.2":
+  "integrity" "sha512-MefEcxsBlprKIpfW7eh2I5zJqlWM18xk3duL7SW4VhIs6kNEec//hCpEDoE6P0m7GjqY3vk8X4vnf4aLlZkRcA=="
+  "resolved" "https://registry.npmjs.org/@truffle/abi-utils/-/abi-utils-1.0.2.tgz"
+  "version" "1.0.2"
   dependencies:
     "change-case" "3.0.2"
     "fast-check" "3.1.1"
@@ -1572,13 +1598,13 @@
   dependencies:
     "cbor" "^5.2.0"
 
-"@truffle/codec@^0.17.1":
-  "integrity" "sha512-f45cuhg92vM2N+ah3Bvm+uxiw/wc6a9o5gKJNqb8oMPCLYRGV4sQXTnNaAlFP1BBxFriciH3kwYt5xPrL39SgA=="
-  "resolved" "https://registry.npmjs.org/@truffle/codec/-/codec-0.17.1.tgz"
-  "version" "0.17.1"
+"@truffle/codec@^0.17.2":
+  "integrity" "sha512-n9HX8R5a5+/j6Y0+lqSzIyU1cUxTRYn/xEWp0Qc1b0Vtltad7wvVh+KLGvbm/KQEX3o1RK1xRIUN2E0QlDeQnA=="
+  "resolved" "https://registry.npmjs.org/@truffle/codec/-/codec-0.17.2.tgz"
+  "version" "0.17.2"
   dependencies:
-    "@truffle/abi-utils" "^1.0.1"
-    "@truffle/compile-common" "^0.9.6"
+    "@truffle/abi-utils" "^1.0.2"
+    "@truffle/compile-common" "^0.9.7"
     "big.js" "^6.0.3"
     "bn.js" "^5.1.3"
     "cbor" "^5.2.0"
@@ -1588,10 +1614,10 @@
     "utf8" "^3.0.0"
     "web3-utils" "1.10.0"
 
-"@truffle/compile-common@^0.9.6":
-  "integrity" "sha512-TCcmr1E0GqMZJ2tOaCRNEllxTBJ/g7TuD6jDJpw5Gt9Bw0YO3Cmp6yPQRynRSO4xMJbHUgiEsSfRgIhswut5UA=="
-  "resolved" "https://registry.npmjs.org/@truffle/compile-common/-/compile-common-0.9.6.tgz"
-  "version" "0.9.6"
+"@truffle/compile-common@^0.9.7":
+  "integrity" "sha512-TXuVLc5yJ/A0bSWw5OWIdXmcyaPpj3TJQ60ki7w9cIuW65Bazw7P4FRPaVNjR9YGe1FLYJ36GSdd9V3egPbzCg=="
+  "resolved" "https://registry.npmjs.org/@truffle/compile-common/-/compile-common-0.9.7.tgz"
+  "version" "0.9.7"
   dependencies:
     "@truffle/error" "^0.2.1"
     "colors" "1.4.0"
@@ -1630,21 +1656,21 @@
   "resolved" "https://registry.npmjs.org/@truffle/dashboard-message-bus-common/-/dashboard-message-bus-common-0.1.6.tgz"
   "version" "0.1.6"
 
-"@truffle/db-loader@^0.2.32":
-  "integrity" "sha512-LzADLp99ehOLwjeAUM3tv9aqqFU4Hr2uVWhpdYRnDORBY57gt0WV6mTFQzPS+vsR0cCo/czQa/YjbKWSsYExmw=="
-  "resolved" "https://registry.npmjs.org/@truffle/db-loader/-/db-loader-0.2.32.tgz"
-  "version" "0.2.32"
+"@truffle/db-loader@^0.2.33":
+  "integrity" "sha512-VAsT2YxzVmugzIWYpf+tlPRW7l68rC5hM99D/jldN4cnvn2Ki74diOI8svTZ9R2o5iY1Uk26swHceAm106+wdQ=="
+  "resolved" "https://registry.npmjs.org/@truffle/db-loader/-/db-loader-0.2.33.tgz"
+  "version" "0.2.33"
   optionalDependencies:
-    "@truffle/db" "^2.0.32"
+    "@truffle/db" "^2.0.33"
 
-"@truffle/db@^2.0.32":
-  "integrity" "sha512-8aGLOCbOouNwmSMz1ML3n3mlCIUzeGx5PcERuPc7T6ucsex1+wJJ+dTby7fYWKdLgFxD16jH3VDVW6iajs/2Tg=="
-  "resolved" "https://registry.npmjs.org/@truffle/db/-/db-2.0.32.tgz"
-  "version" "2.0.32"
+"@truffle/db@^2.0.33":
+  "integrity" "sha512-6AQfZLeKo72zvBisTIAnuG3Ho28cji2OkWLK6HFVHiGT/+7+AbB45IHVBeRqhqlIk57IFaDuSsxtyY4FeEZBSg=="
+  "resolved" "https://registry.npmjs.org/@truffle/db/-/db-2.0.33.tgz"
+  "version" "2.0.33"
   dependencies:
     "@graphql-tools/delegate" "^8.4.3"
     "@graphql-tools/schema" "^8.3.1"
-    "@truffle/abi-utils" "^1.0.1"
+    "@truffle/abi-utils" "^1.0.2"
     "@truffle/code-utils" "^3.0.3"
     "@truffle/config" "^1.3.59"
     "abstract-leveldown" "^7.2.0"
@@ -1662,15 +1688,15 @@
     "pouchdb-find" "^7.0.0"
     "web3-utils" "1.10.0"
 
-"@truffle/debugger@^12.1.1":
-  "integrity" "sha512-5129FJk+06RxfbV1aHv4AhvATVELkhhtsC55WjRKoYTTKkU+bENf6GVgFyt3vuHEgh8mN/JOC5wg6ozWtoQyhg=="
-  "resolved" "https://registry.npmjs.org/@truffle/debugger/-/debugger-12.1.1.tgz"
-  "version" "12.1.1"
+"@truffle/debugger@^12.1.2":
+  "integrity" "sha512-h+CcxTZWxjcsldT6+GdGYE2R122EQ4wh4Q41nZ66SwbpM7qPN4VparGqoU18k1jJx5piYm+aJ7FPOdaaEVYPLQ=="
+  "resolved" "https://registry.npmjs.org/@truffle/debugger/-/debugger-12.1.2.tgz"
+  "version" "12.1.2"
   dependencies:
     "@ensdomains/ensjs" "^2.1.0"
-    "@truffle/abi-utils" "^1.0.1"
-    "@truffle/codec" "^0.17.1"
-    "@truffle/source-map-utils" "^1.3.117"
+    "@truffle/abi-utils" "^1.0.2"
+    "@truffle/codec" "^0.17.2"
+    "@truffle/source-map-utils" "^1.3.118"
     "bn.js" "^5.1.3"
     "debug" "^4.3.1"
     "json-pointer" "^0.6.1"
@@ -1723,13 +1749,13 @@
     "debug" "^4.3.1"
     "web3" "1.10.0"
 
-"@truffle/source-map-utils@^1.3.117":
-  "integrity" "sha512-olToMrN+t+nIIlSwiq9rIYU36CkgQw1mcMCPmYPATJRIF+b+mcb318eYEEBSdc4vzs2FXevPojD9Nm7NNTTzxA=="
-  "resolved" "https://registry.npmjs.org/@truffle/source-map-utils/-/source-map-utils-1.3.117.tgz"
-  "version" "1.3.117"
+"@truffle/source-map-utils@^1.3.118":
+  "integrity" "sha512-SGOW6moch7MqsjSoUf7e/y6xuCZi5M6kEtSG1aaZQJrxrj/ZuooYpShXxISyiOAB89QZ5txCRVsN2EnNYgjjkA=="
+  "resolved" "https://registry.npmjs.org/@truffle/source-map-utils/-/source-map-utils-1.3.118.tgz"
+  "version" "1.3.118"
   dependencies:
     "@truffle/code-utils" "^3.0.3"
-    "@truffle/codec" "^0.17.1"
+    "@truffle/codec" "^0.17.2"
     "debug" "^4.3.1"
     "json-pointer" "^0.6.1"
     "node-interval-tree" "^1.3.3"
@@ -5092,6 +5118,11 @@
   "resolved" "https://registry.npmjs.org/env-paths/-/env-paths-2.2.1.tgz"
   "version" "2.2.1"
 
+"erc721a@^4.2.3":
+  "integrity" "sha512-0deF0hOOK1XI1Vxv3NKDh2E9sgzRlENuOoexjXRJIRfYCsLlqi9ejl2RF6Wcd9HfH0ldqC03wleQ2WDjxoOUvA=="
+  "resolved" "https://registry.npmjs.org/erc721a/-/erc721a-4.2.3.tgz"
+  "version" "4.2.3"
+
 "errno@~0.1.1":
   "integrity" "sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A=="
   "resolved" "https://registry.npmjs.org/errno/-/errno-0.1.8.tgz"
@@ -6013,9 +6044,9 @@
     "xmlhttprequest" "1.8.0"
 
 "ethers@^5.0.0", "ethers@^6.1.0", "ethers@^6.6.0", "ethers@^6.6.7", "ethers@6.x":
-  "integrity" "sha512-1SdT3W5/IPAcx9l5/+9qKRYR/iqVIdNQIct18yeh+XvN+I4RK44mvOsAerMwJYCAwdQfsOgf3OkfozeuMInbtQ=="
-  "resolved" "https://registry.npmjs.org/ethers/-/ethers-6.6.7.tgz"
-  "version" "6.6.7"
+  "integrity" "sha512-pxt5hK82RNwcTX2gOZP81t6qVPVspnkpeivwEgQuK9XUvbNtghBnT8GNIb/gPh+WnVSfi8cXC9XlfT8sqc6D6w=="
+  "resolved" "https://registry.npmjs.org/ethers/-/ethers-6.7.0.tgz"
+  "version" "6.7.0"
   dependencies:
     "@adraffy/ens-normalize" "1.9.2"
     "@noble/hashes" "1.1.2"
@@ -10819,10 +10850,10 @@
   "resolved" "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
   "version" "0.11.1"
 
-"regenerator-runtime@^0.13.11":
-  "integrity" "sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg=="
-  "resolved" "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz"
-  "version" "0.13.11"
+"regenerator-runtime@^0.14.0":
+  "integrity" "sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA=="
+  "resolved" "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz"
+  "version" "0.14.0"
 
 "regenerator-transform@^0.10.0":
   "integrity" "sha512-PJepbvDbuK1xgIgnau7Y90cwaAmO/LCLMI2mPvaXq2heGMR3aWW5/BQvYrhJ8jgmQjXewXvBjzfqKcVOmhjZ6Q=="
@@ -12362,18 +12393,18 @@
   "version" "1.0.1"
 
 "truffle@^5.0.0":
-  "integrity" "sha512-8n1RQNxHUkYDGI9OXdrrFcTL810aUbMEG7rzhbU4a6n2U5xbIDrWThJTzyfoNDtEPOA7DpAYdUpHG4V14Ct0IA=="
-  "resolved" "https://registry.npmjs.org/truffle/-/truffle-5.11.1.tgz"
-  "version" "5.11.1"
+  "integrity" "sha512-wQzdSkd1HKl0RFDltDVBL35SPqiibrPDlkZ2LJx8OcBheWrenXwFgdjW616w0ImyCySXsbnNw0tO63K+LxlwGw=="
+  "resolved" "https://registry.npmjs.org/truffle/-/truffle-5.11.2.tgz"
+  "version" "5.11.2"
   dependencies:
-    "@truffle/db-loader" "^0.2.32"
-    "@truffle/debugger" "^12.1.1"
+    "@truffle/db-loader" "^0.2.33"
+    "@truffle/debugger" "^12.1.2"
     "app-module-path" "^2.2.0"
     "ganache" "7.9.0"
     "mocha" "10.1.0"
     "original-require" "^1.0.1"
   optionalDependencies:
-    "@truffle/db" "^2.0.32"
+    "@truffle/db" "^2.0.33"
 
 "ts-command-line-args@^2.2.0":
   "integrity" "sha512-H69ZwTw3rFHb5WYpQya40YAX2/w7Ut75uUECbgBIsLmM+BNuYnxsltfyyLMxy6sEeKxgijLTnQtLd0nKd6+IYw=="

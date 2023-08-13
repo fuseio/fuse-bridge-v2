@@ -16,7 +16,7 @@
     "lint": "yarn prettier && solhint 'contracts/*.sol' && solhint 'contracts/**/*.sol'"
   },
   "dependencies": {
-    "@layerzerolabs/solidity-examples": "0.0.6",
+    "@layerzerolabs/solidity-examples": "^0.0.13",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
     "@nomicfoundation/hardhat-ethers": "^3.0.4",
     "@openzeppelin/contracts": "^4.4.1",
