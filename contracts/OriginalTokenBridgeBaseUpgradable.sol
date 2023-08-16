@@ -4,11 +4,11 @@ pragma solidity ^0.8.17;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {LzLib} from "@layerzerolabs/solidity-examples/contracts/libraries/LzLib.sol";
-import {TokenBridgeBase} from "./TokenBridgeBase.sol";
+import {TokenBridgeBaseUpgradable} from "./TokenBridgeBaseUpgradable.sol";
 import {IWETH} from "./interfaces/IWETH.sol";
 
 /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
-contract OriginalTokenBridge is TokenBridgeBase {
+contract OriginalTokenBridgeBaseUpgradable is TokenBridgeBaseUpgradable {
     using SafeERC20 for IERC20;
 
     /// @notice Tokens that can be bridged to the remote chain
@@ -33,9 +33,9 @@ contract OriginalTokenBridge is TokenBridgeBase {
     event RegisterToken(address token);
     event WithdrawFee(address indexed token, address to, uint amount);
 
-    function initialize(address _endpoint, uint16 _remoteChainId, address _weth) external initializer {
+    function __OriginalTokenBridgeBaseUpgradable_init(address _endpoint, uint16 _remoteChainId, address _weth) internal onlyInitializing {
         require(_weth != address(0), "OriginalTokenBridge: invalid WETH address");
-        __TokenBridgeBase_init(_endpoint);
+        __TokenBridgeBaseUpgradable_init(_endpoint);
         remoteChainId = _remoteChainId;
         weth = _weth;
     }
