@@ -4,7 +4,7 @@ module.exports = async function ({ deployments, getNamedAccounts }) {
 	const { deployer } = await getNamedAccounts()
 	console.log(`Deployer address: ${deployer}`)
 
-	const wrappedTokens = ["WETH", "USDC", "USDT"]
+	const wrappedTokens = ["USDC"]
 
 	for (let i = 0; i < wrappedTokens.length; i++) {
 		await deploy(wrappedTokens[i], {
