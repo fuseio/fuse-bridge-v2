@@ -11,13 +11,13 @@ describe("WrappedTokenBridge", () => {
     let owner, user
     let originalToken, wrappedToken
     let wrappedTokenBridge
-    let wrappedTokenEndpoint, wrappedTokenBridgeFactory
+    let wrappedTokenEndpoint, wrappedTokenBridgeFactory, wrappedTokenBridgeV2Factory
     let callParams, adapterParams
 
-    const createPayload = (pk = pkMint, token = originalToken.target) =>AbiCoder.defaultAbiCoder().encode(["uint8", "address", "address", "uint256"], [pk, token, user.address, amount])
+    const createPayload = (pk = pkMint, token = originalToken.target) => AbiCoder.defaultAbiCoder().encode(["uint8", "address", "address", "uint256"], [pk, token, user.address, amount])
 
     beforeEach(async () => {
-        [owner, user] = await ethers.getSigners()
+        ;[owner, user] = await ethers.getSigners()
 
         const endpointFactory = await ethers.getContractFactory("LayerZeroEndpointStub")
         const originalTokenEndpoint = await endpointFactory.deploy()
@@ -155,6 +155,21 @@ describe("WrappedTokenBridge", () => {
             expect(await wrappedToken.totalSupply()).to.be.eq(0)
             expect(await wrappedToken.balanceOf(user.address)).to.be.eq(0)
             expect(await wrappedTokenBridge.totalValueLocked(originalTokenChainId, originalToken.target)).to.be.eq(0)
+        })
+    })
+
+    describe("Upgrades Contract", () => {
+        beforeEach(async () => {
+            wrappedTokenBridgeV2Factory = await ethers.getContractFactory("WrappedTokenBridgeHarnessUpgradableV2")
+        })
+
+        it("reverts when upgraded by non owner", async () => {
+            const connectedProxy = wrappedTokenBridgeV2Factory.connect(user)
+            await expect(upgrades.upgradeProxy(wrappedTokenBridge, connectedProxy)).to.be.revertedWith("Ownable: caller is not the owner")
+        })
+
+        it("Upgrades the contract", async () => {
+            const newContract = await upgrades.upgradeProxy(wrappedTokenBridge, wrappedTokenBridgeV2Factory)
         })
     })
 })

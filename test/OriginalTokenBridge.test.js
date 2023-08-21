@@ -13,7 +13,7 @@ describe("OriginalTokenBridge", () => {
     let owner, user
     let originalToken, weth
     let originalTokenBridge
-    let originalTokenEndpoint, originalTokenBridgeFactory
+    let originalTokenEndpoint, originalTokenBridgeFactory, originalTokenBridgeV2Factory
     let callParams, adapterParams
 
     const createPayload = (pk = pkUnlock, token = originalToken.target, withdrawalAmount = amount, totalAmount = amount, unwrapWeth = false) =>
@@ -304,6 +304,21 @@ describe("OriginalTokenBridge", () => {
 
             await originalTokenBridge.withdrawFee(originalToken.target, owner.address, withdrawalFee)
             expect(await originalToken.balanceOf(owner.address)).to.be.eq(withdrawalFee)
+        })
+    })
+
+    describe("Upgrades Contract", () => {
+        beforeEach(async () => {
+            originalTokenBridgeV2Factory = await ethers.getContractFactory("OriginalTokenBridgeHarnessUpgradableV2")
+        })
+
+        it("reverts when upgraded by non owner", async () => {
+            const connectedProxy = originalTokenBridgeV2Factory.connect(user)
+            await expect(upgrades.upgradeProxy(originalTokenBridge, connectedProxy)).to.be.revertedWith("Ownable: caller is not the owner")
+        })
+
+        it("Upgrades the contract", async () => {
+            const newContract = await upgrades.upgradeProxy(originalTokenBridge, originalTokenBridgeV2Factory)
         })
     })
 })
