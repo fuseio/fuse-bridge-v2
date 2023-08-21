@@ -75,7 +75,6 @@ contract OriginalTokenBridgeBaseUpgradable is TokenBridgeBaseUpgradable {
     /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
     function bridge(address token, uint amountLD, address to, LzLib.CallParams calldata callParams, bytes memory adapterParams) external payable nonReentrant {
         require(supportedTokens[token], "OriginalTokenBridge: token is not supported");
-
         // Supports tokens with transfer fee
         uint balanceBefore = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransferFrom(msg.sender, address(this), amountLD);

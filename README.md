@@ -63,7 +63,7 @@ Get the coverage report.
 
 ## Using Scripts
 
-To deploy fresh contracts plese dele the contents of the `deployments` folder.
+To deploy fresh contracts plese delete the contents of the `deployments` folder.
 
 Populate the env MNENOIC in the env file and run the following commands in order.
 

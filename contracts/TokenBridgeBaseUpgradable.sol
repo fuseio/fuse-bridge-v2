@@ -40,5 +40,6 @@ abstract contract TokenBridgeBaseUpgradable is NonblockingLzAppUpgradeable, Reen
     /// @dev Overrides the renounce ownership logic inherited from openZeppelin `Ownable`
     function renounceOwnership() public override onlyOwner {}
 
+    /// @dev Function that should revert when `msg.sender` is not authorized to upgrade the contract. Called by {upgradeTo} and {upgradeToAndCall}.
     function _authorizeUpgrade(address newImplemantation) internal override onlyOwner {}
 }
