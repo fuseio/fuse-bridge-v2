@@ -20,6 +20,7 @@ abstract contract TokenBridgeBaseUpgradable is NonblockingLzAppUpgradeable, Reen
     function __TokenBridgeBaseUpgradable_init(address _endpoint) internal onlyInitializing {
         __NonblockingLzAppUpgradeable_init(_endpoint);
         __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
     }
 
     /// @custom:oz-upgrades-unsafe-allow constructor
