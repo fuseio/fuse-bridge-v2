@@ -318,7 +318,11 @@ describe("OriginalTokenBridge", () => {
         })
 
         it("Upgrades the contract", async () => {
-            const newContract = await upgrades.upgradeProxy(originalTokenBridge, originalTokenBridgeV2Factory)
+            await upgrades.upgradeProxy(originalTokenBridge, originalTokenBridgeV2Factory)
+            const filter = originalTokenBridge.filters.Upgraded()
+            const logs = await originalTokenBridge.queryFilter(filter)
+            const event = logs[0]
+            expect(event).to.exist
         })
     })
 })

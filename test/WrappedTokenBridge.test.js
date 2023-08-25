@@ -169,7 +169,11 @@ describe("WrappedTokenBridge", () => {
         })
 
         it("Upgrades the contract", async () => {
-            const newContract = await upgrades.upgradeProxy(wrappedTokenBridge, wrappedTokenBridgeV2Factory)
+            await upgrades.upgradeProxy(wrappedTokenBridge, wrappedTokenBridgeV2Factory)
+            const filter = wrappedTokenBridge.filters.Upgraded()
+            const logs = await wrappedTokenBridge.queryFilter(filter)
+            const event = logs[0]
+            expect(event).to.exist
         })
     })
 })

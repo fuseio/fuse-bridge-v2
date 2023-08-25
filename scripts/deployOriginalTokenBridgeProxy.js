@@ -1,9 +1,13 @@
 // scripts/deployOriginalTokenBridgeProxy.js
 const { ethers, upgrades } = require("hardhat")
 
+const ENDPOINT_ADDRESS = "" // <-- Replace with the address of the endpoint you want to use
+const FOREIGN_CHAIN_ID = 138 // <-- Replace with the chain ID of the foreign chain
+const WETH_ADDRESS = "" // <-- Replace with the address of the WETH token on the source chain
+
 async function main() {
     const Bridge = await ethers.getContractFactory("contracts/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
-    const bridge = await upgrades.deployProxy(Bridge, ["0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4", 110, "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"], { kind: "uups" })
+    const bridge = await upgrades.deployProxy(Bridge, [ENDPOINT_ADDRESS, FOREIGN_CHAIN_ID, WETH_ADDRESS], { kind: "uups" })
     console.log("Deploying bridge...")
     await bridge.waitForDeployment()
     console.log(bridge.deploymentTransaction().hash)
