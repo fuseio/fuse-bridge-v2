@@ -336,9 +336,11 @@ describe("OriginalTokenBridge", () => {
             const LDtoSD = await originalTokenBridge.LDtoSDConversionRate(originalToken.target)
 
             const withdrawalFee = (amount * BigInt(withdrawalFeeBps)) / BigInt(10000) / LDtoSD
+            const withdrawalAmount = amount / LDtoSD - withdrawalFee
 
             await originalTokenBridge.connect(owner).withdrawFee(originalToken.target, owner.address, withdrawalFee)
             expect(await originalToken.balanceOf(owner.address)).to.be.eq(withdrawalFee)
+            expect(await originalTokenBridge.totalValueLockedSD(originalToken.target)).to.be.eq(withdrawalAmount)
         })
 
         it("bridges WETH and withdraws fees", async () => {
@@ -346,9 +348,11 @@ describe("OriginalTokenBridge", () => {
             await originalTokenBridge.connect(user).bridgeNative(amount, user.address, callParams, adapterParams, { value: totalAmount })
 
             const withdrawalFee = (amount * BigInt(withdrawalFeeBps)) / BigInt(10000)
+            const withdrawalAmount = amount  - withdrawalFee
 
             await originalTokenBridge.connect(owner).withdrawFee(weth.target, owner.address, withdrawalFee)
             expect(await weth.balanceOf(owner.address)).to.be.eq(withdrawalFee)
+            expect(await originalTokenBridge.totalValueLockedSD(weth.target)).to.be.eq(withdrawalAmount)
         })
     })
 
