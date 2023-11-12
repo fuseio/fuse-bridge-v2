@@ -307,6 +307,60 @@ describe("OriginalTokenBridge", () => {
         })
     })
 
+    describe("sets withdrawal fee", () => {
+        const withdrawalFeeBps = 100
+        it("reverts when called by non owner", async () => {
+            await expect(originalTokenBridge.connect(user).setWithdrawalFeeBps(withdrawalFeeBps)).to.be.revertedWith("Ownable: caller is not the owner")
+        })
+
+        it("reverts when withdrawal fee is greater than 10000", async () => {
+            const invalidWithdrawalFeeBps = 10001
+            await expect(originalTokenBridge.setWithdrawalFeeBps(invalidWithdrawalFeeBps)).to.be.revertedWith("OriginalTokenBridge: invalid withdrawal fee")
+        })
+
+        it("sets withdrawal fee", async () => {
+            await originalTokenBridge.setWithdrawalFeeBps(withdrawalFeeBps)
+            expect(await originalTokenBridge.withdrawalFeeBps()).to.be.eq(withdrawalFeeBps)
+        })
+    })
+
+    describe("bridges and withdraw fee", () => {
+        const withdrawalFeeBps = 100
+        let fee
+        let totalAmount
+        beforeEach(async () => {
+            await originalTokenBridge.setWithdrawalFeeBps(withdrawalFeeBps)
+            fee = (await originalTokenBridge.estimateBridgeFee(false, adapterParams)).nativeFee
+            totalAmount = amount + fee
+            await originalToken.connect(user).approve(originalTokenBridge.target, amount)
+        })
+
+        it("bridges ERC20 token and withdraws fees", async () => {
+            await originalTokenBridge.registerToken(originalToken.target, sharedDecimals)
+            await originalTokenBridge.connect(user).bridge(originalToken.target, amount, user.address, callParams, adapterParams, { value: fee })
+            const LDtoSD = await originalTokenBridge.LDtoSDConversionRate(originalToken.target)
+
+            const withdrawalFee = (amount * BigInt(withdrawalFeeBps)) / BigInt(10000) / LDtoSD
+            const withdrawalAmount = amount / LDtoSD - withdrawalFee
+
+            await originalTokenBridge.connect(owner).withdrawFee(originalToken.target, owner.address, withdrawalFee)
+            expect(await originalToken.balanceOf(owner.address)).to.be.eq(withdrawalFee)
+            expect(await originalTokenBridge.totalValueLockedSD(originalToken.target)).to.be.eq(withdrawalAmount)
+        })
+
+        it("bridges WETH and withdraws fees", async () => {
+            await originalTokenBridge.registerToken(weth.target, wethSharedDecimals)
+            await originalTokenBridge.connect(user).bridgeNative(amount, user.address, callParams, adapterParams, { value: totalAmount })
+
+            const withdrawalFee = (amount * BigInt(withdrawalFeeBps)) / BigInt(10000)
+            const withdrawalAmount = amount - withdrawalFee
+
+            await originalTokenBridge.connect(owner).withdrawFee(weth.target, owner.address, withdrawalFee)
+            expect(await weth.balanceOf(owner.address)).to.be.eq(withdrawalFee)
+            expect(await originalTokenBridge.totalValueLockedSD(weth.target)).to.be.eq(withdrawalAmount)
+        })
+    })
+
     describe("Upgrades Contract", () => {
         beforeEach(async () => {
             originalTokenBridgeV2Factory = await ethers.getContractFactory("OriginalTokenBridgeHarnessUpgradableV2")

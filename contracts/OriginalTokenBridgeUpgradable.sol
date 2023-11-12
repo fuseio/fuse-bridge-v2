@@ -11,6 +11,12 @@ import {IWETH} from "./interfaces/IWETH.sol";
 contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     using SafeERC20 for IERC20;
 
+    /// @notice Total bps representing 100%
+    uint16 public constant TOTAL_BPS = 10000;
+
+    /// @notice An optional fee charged on withdrawal, expressed in bps. E.g., 1bps = 0.01%
+    uint16 public withdrawalFeeBps;
+
     /// @notice Tokens that can be bridged to the remote chain
     mapping(address => bool) public supportedTokens;
 
@@ -32,6 +38,7 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     event SetRemoteChainId(uint16 remoteChainId);
     event RegisterToken(address token);
     event WithdrawFee(address indexed token, address to, uint amount);
+    event SetWithdrawalFeeBps(uint16 withdrawalFeeBps);
 
     function __OriginalTokenBridgeBaseUpgradable_init(address _endpoint, uint16 _remoteChainId, address _weth) internal onlyInitializing {
         require(_weth != address(0), "OriginalTokenBridge: invalid WETH address");
@@ -75,6 +82,12 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         return lzEndpoint.estimateFees(remoteChainId, address(this), payload, useZro, adapterParams);
     }
 
+    function setWithdrawalFeeBps(uint16 _withdrawalFeeBps) external onlyOwner {
+        require(_withdrawalFeeBps < TOTAL_BPS, "OriginalTokenBridge: invalid withdrawal fee bps");
+        withdrawalFeeBps = _withdrawalFeeBps;
+        emit SetWithdrawalFeeBps(_withdrawalFeeBps);
+    }
+
     /// @notice Bridges ERC20 to the remote chain
     /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
     function bridge(address token, uint amountLD, address to, LzLib.CallParams calldata callParams, bytes memory adapterParams) external payable nonReentrant {
@@ -89,7 +102,6 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         if (dust > 0) {
             IERC20(token).safeTransfer(msg.sender, dust);
         }
-
         _bridge(token, amountWithoutDustLD, to, msg.value, callParams, adapterParams);
     }
 
@@ -107,13 +119,20 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         require(to != address(0), "OriginalTokenBridge: invalid to");
         _checkAdapterParams(remoteChainId, PT_MINT, adapterParams);
 
+        uint withdrawalAmountLD = amountLD;
+        if (withdrawalFeeBps > 0) {
+            uint withdrawalFee = (amountLD * withdrawalFeeBps) / TOTAL_BPS;
+            withdrawalAmountLD -= withdrawalFee;
+        }
+        
         uint amountSD = _amountLDtoSD(token, amountLD);
-        require(amountSD > 0, "OriginalTokenBridge: invalid amount");
+        uint withdrawalAmountSD = _amountLDtoSD(token, withdrawalAmountLD);
+        require(amountSD > 0 && withdrawalAmountSD > 0, "OriginalTokenBridge: invalid amount");
 
-        totalValueLockedSD[token] += amountSD;
-        bytes memory payload = abi.encode(PT_MINT, token, to, amountSD);
+        totalValueLockedSD[token] += withdrawalAmountSD;
+        bytes memory payload = abi.encode(PT_MINT, token, to, withdrawalAmountSD);
         _lzSend(remoteChainId, payload, callParams.refundAddress, callParams.zroPaymentAddress, adapterParams, nativeFee);
-        emit SendToken(token, msg.sender, to, amountLD);
+        emit SendToken(token, msg.sender, to, withdrawalAmountSD);
     }
 
     function withdrawFee(address token, address to, uint amountLD) public onlyOwner {
