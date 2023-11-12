@@ -313,6 +313,11 @@ describe("OriginalTokenBridge", () => {
             await expect(originalTokenBridge.connect(user).setWithdrawalFeeBps(withdrawalFeeBps)).to.be.revertedWith("Ownable: caller is not the owner")
         })
 
+        it("reverts when withdrawal fee is greater than 10000", async () => {
+            const invalidWithdrawalFeeBps = 10001
+            await expect(originalTokenBridge.setWithdrawalFeeBps(invalidWithdrawalFeeBps)).to.be.revertedWith("OriginalTokenBridge: invalid withdrawal fee")
+        })
+
         it("sets withdrawal fee", async () => {
             await originalTokenBridge.setWithdrawalFeeBps(withdrawalFeeBps)
             expect(await originalTokenBridge.withdrawalFeeBps()).to.be.eq(withdrawalFeeBps)
@@ -348,7 +353,7 @@ describe("OriginalTokenBridge", () => {
             await originalTokenBridge.connect(user).bridgeNative(amount, user.address, callParams, adapterParams, { value: totalAmount })
 
             const withdrawalFee = (amount * BigInt(withdrawalFeeBps)) / BigInt(10000)
-            const withdrawalAmount = amount  - withdrawalFee
+            const withdrawalAmount = amount - withdrawalFee
 
             await originalTokenBridge.connect(owner).withdrawFee(weth.target, owner.address, withdrawalFee)
             expect(await weth.balanceOf(owner.address)).to.be.eq(withdrawalFee)
