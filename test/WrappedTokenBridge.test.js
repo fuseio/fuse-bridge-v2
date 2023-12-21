@@ -75,6 +75,34 @@ describe("WrappedTokenBridge", () => {
         })
     })
 
+    describe("updateToken", () => {
+        it("reverts when called by non owner", async () => {
+            await expect(wrappedTokenBridge.connect(user).updateToken(wrappedToken.target, originalTokenChainId, originalToken.target)).to.be.revertedWith("Ownable: caller is not the owner")
+        })
+
+        it("reverts when local token is address zero", async () => {
+            await expect(wrappedTokenBridge.updateToken(ZeroAddress, originalTokenChainId, originalToken.target)).to.be.revertedWith("WrappedTokenBridge: invalid local token")
+        })
+
+        it("reverts when remote token is address zero", async () => {
+            await expect(wrappedTokenBridge.updateToken(wrappedToken.target, originalTokenChainId, ZeroAddress)).to.be.revertedWith("WrappedTokenBridge: invalid remote token")
+        })
+
+        it("reverts when token has locked value", async () => {
+            await wrappedTokenBridge.registerToken(wrappedToken.target, originalTokenChainId, originalToken.target)
+            await wrappedTokenBridge.simulateNonblockingLzReceive(originalTokenChainId, createPayload())
+            await expect(wrappedTokenBridge.updateToken(wrappedToken.target, originalTokenChainId, originalToken.target)).to.be.revertedWith("WrappedTokenBridge: token has locked value")
+        })
+
+        it("updates token", async () => {
+            await wrappedTokenBridge.registerToken(wrappedToken.target, originalTokenChainId, originalToken.target)
+            await wrappedTokenBridge.updateToken(wrappedToken.target, originalTokenChainId, originalToken.target)
+
+            expect(await wrappedTokenBridge.localToRemote(wrappedToken.target, originalTokenChainId)).to.be.eq(originalToken.target)
+            expect(await wrappedTokenBridge.remoteToLocal(originalToken.target, originalTokenChainId)).to.be.eq(wrappedToken.target)
+        })
+    })
+
     describe("setWithdrawalFeeBps", () => {
         const withdrawalFeeBps = 10
         it("reverts when fee bps is greater than or equal to 100%", async () => {
