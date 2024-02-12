@@ -6,9 +6,10 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {LzLib} from "@layerzerolabs/solidity-examples/contracts/libraries/LzLib.sol";
 import {TokenBridgeBaseUpgradable} from "./TokenBridgeBaseUpgradable.sol";
 import {IWETH} from "./interfaces/IWETH.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
-contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
+contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgradeable {
     using SafeERC20 for IERC20;
 
     /// @notice Tokens that can be bridged to the remote chain
@@ -56,7 +57,7 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         require(localDecimals >= sharedDecimals, "OriginalTokenBridge: shared decimals must be less than or equal to local decimals");
 
         supportedTokens[token] = true;
-        LDtoSDConversionRate[token] = 10**(localDecimals - sharedDecimals);
+        LDtoSDConversionRate[token] = 10 ** (localDecimals - sharedDecimals);
         emit RegisterToken(token);
     }
 
@@ -168,4 +169,13 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
 
     /// @dev Allows receiving ETH when calling WETH.withdraw()
     receive() external payable {}
+
+    /// @dev Pauses the contract
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
 }

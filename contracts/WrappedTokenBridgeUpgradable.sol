@@ -5,9 +5,10 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {LzLib} from "@layerzerolabs/solidity-examples/contracts/libraries/LzLib.sol";
 import {TokenBridgeBaseUpgradable} from "./TokenBridgeBaseUpgradable.sol";
 import {IWrappedERC20} from "./interfaces/IWrappedERC20.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /// @dev Mints a wrapped token when a message received from a remote chain and burns a wrapped token when bridging to a remote chain
-contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
+contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgradeable {
     /// @notice Total bps representing 100%
     uint16 public constant TOTAL_BPS = 10000;
 
@@ -33,6 +34,7 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
 
     function __WrappedTokenBridgeBaseUpgradable_init(address _endpoint) internal onlyInitializing {
         __TokenBridgeBaseUpgradable_init(_endpoint);
+        __Pausable_init();
     }
 
     function initialize(address _endpoint) external virtual initializer {
@@ -100,5 +102,14 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         IWrappedERC20(localToken).mint(to, amount);
 
         emit WrapToken(localToken, remoteToken, srcChainId, to, amount);
+    }
+
+    /// @dev Pauses the contract
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
     }
 }
