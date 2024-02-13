@@ -6,10 +6,9 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {LzLib} from "@layerzerolabs/solidity-examples/contracts/libraries/LzLib.sol";
 import {TokenBridgeBaseUpgradable} from "./TokenBridgeBaseUpgradable.sol";
 import {IWETH} from "./interfaces/IWETH.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
-contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgradeable {
+contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     using SafeERC20 for IERC20;
 
     /// @notice Tokens that can be bridged to the remote chain
@@ -28,11 +27,15 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpg
     /// @notice Address of the wrapped native gas token (e.g. WETH, WBNB, WMATIC)
     address public weth;
 
+    bool private _paused;
+
     event SendToken(address token, address from, address to, uint amount);
     event ReceiveToken(address token, address to, uint amount);
     event SetRemoteChainId(uint16 remoteChainId);
     event RegisterToken(address token);
     event WithdrawFee(address indexed token, address to, uint amount);
+    event Paused(address account);
+    event Unpaused(address account);
 
     function __OriginalTokenBridgeBaseUpgradable_init(address _endpoint, uint16 _remoteChainId, address _weth) internal onlyInitializing {
         require(_weth != address(0), "OriginalTokenBridge: invalid WETH address");
@@ -169,6 +172,75 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpg
 
     /// @dev Allows receiving ETH when calling WETH.withdraw()
     receive() external payable {}
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is not paused.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    modifier whenNotPaused() {
+        _requireNotPaused();
+        _;
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is paused.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    modifier whenPaused() {
+        _requirePaused();
+        _;
+    }
+
+    /**
+     * @dev Returns true if the contract is paused, and false otherwise.
+     */
+    function paused() public view virtual returns (bool) {
+        return _paused;
+    }
+
+    /**
+     * @dev Throws if the contract is paused.
+     */
+    function _requireNotPaused() internal view virtual {
+        require(!paused(), "Pausable: paused");
+    }
+
+    /**
+     * @dev Throws if the contract is not paused.
+     */
+    function _requirePaused() internal view virtual {
+        require(paused(), "Pausable: not paused");
+    }
+
+    /**
+     * @dev Triggers stopped state.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    function _pause() internal virtual whenNotPaused {
+        _paused = true;
+        emit Paused(_msgSender());
+    }
+
+    /**
+     * @dev Returns to normal state.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    function _unpause() internal virtual whenPaused {
+        _paused = false;
+        emit Unpaused(_msgSender());
+    }
 
     /// @dev Pauses the contract
     function pause() public onlyOwner {

@@ -5,10 +5,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {LzLib} from "@layerzerolabs/solidity-examples/contracts/libraries/LzLib.sol";
 import {TokenBridgeBaseUpgradable} from "./TokenBridgeBaseUpgradable.sol";
 import {IWrappedERC20} from "./interfaces/IWrappedERC20.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 /// @dev Mints a wrapped token when a message received from a remote chain and burns a wrapped token when bridging to a remote chain
-contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgradeable {
+contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     /// @notice Total bps representing 100%
     uint16 public constant TOTAL_BPS = 10000;
 
@@ -27,14 +26,18 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgr
     /// @dev [remote chain] => [remote token] => [bridged amount]
     mapping(uint16 => mapping(address => uint)) public totalValueLocked;
 
+    bool private _paused;
+
     event WrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint amount);
     event UnwrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint amount);
     event RegisterToken(address localToken, uint16 remoteChainId, address remoteToken);
     event SetWithdrawalFeeBps(uint16 withdrawalFeeBps);
+    event Paused(address account);
+    event Unpaused(address account);
 
     function __WrappedTokenBridgeBaseUpgradable_init(address _endpoint) internal onlyInitializing {
         __TokenBridgeBaseUpgradable_init(_endpoint);
-        __Pausable_init();
+        _paused = false;
     }
 
     function initialize(address _endpoint) external virtual initializer {
@@ -102,6 +105,75 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable, PausableUpgr
         IWrappedERC20(localToken).mint(to, amount);
 
         emit WrapToken(localToken, remoteToken, srcChainId, to, amount);
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is not paused.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    modifier whenNotPaused() {
+        _requireNotPaused();
+        _;
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is paused.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    modifier whenPaused() {
+        _requirePaused();
+        _;
+    }
+
+    /**
+     * @dev Returns true if the contract is paused, and false otherwise.
+     */
+    function paused() public view virtual returns (bool) {
+        return _paused;
+    }
+
+    /**
+     * @dev Throws if the contract is paused.
+     */
+    function _requireNotPaused() internal view virtual {
+        require(!paused(), "Pausable: paused");
+    }
+
+    /**
+     * @dev Throws if the contract is not paused.
+     */
+    function _requirePaused() internal view virtual {
+        require(paused(), "Pausable: not paused");
+    }
+
+    /**
+     * @dev Triggers stopped state.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    function _pause() internal virtual whenNotPaused {
+        _paused = true;
+        emit Paused(_msgSender());
+    }
+
+    /**
+     * @dev Returns to normal state.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    function _unpause() internal virtual whenPaused {
+        _paused = false;
+        emit Unpaused(_msgSender());
     }
 
     /// @dev Pauses the contract
