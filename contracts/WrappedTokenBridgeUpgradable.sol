@@ -79,7 +79,7 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         require(totalValueLocked[remoteChainId][remoteToken] >= amount, "WrappedTokenBridge: insufficient liquidity on the destination");
 
         totalValueLocked[remoteChainId][remoteToken] -= amount;
-        IWrappedERC20(localToken).burn(msg.sender, amount);
+        IWrappedERC20(localToken).burnFrom(msg.sender, amount);
 
         uint withdrawalAmount = amount;
         if (withdrawalFeeBps > 0) {
