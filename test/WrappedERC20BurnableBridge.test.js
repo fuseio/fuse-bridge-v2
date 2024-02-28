@@ -2,7 +2,7 @@ const { expect } = require("chai")
 const { ethers, upgrades } = require("hardhat")
 const { parseEther, AbiCoder, ZeroAddress } = require("ethers")
 
-describe("WrappedTokenBridge", () => {
+describe("WrappedERC20BurnableBridge", () => {
     const originalTokenChainId = 0
     const wrappedTokenChainId = 1
     const amount = parseEther("10")
@@ -28,7 +28,7 @@ describe("WrappedTokenBridge", () => {
         const originalTokenBridgeFactory = await ethers.getContractFactory("OriginalTokenBridgeUpgradable")
         const originalTokenBridge = await upgrades.deployProxy(originalTokenBridgeFactory, [originalTokenEndpoint.target, wrappedTokenChainId, weth.target], { kind: "uups" })
 
-        wrappedTokenBridgeFactory = await ethers.getContractFactory("WrappedTokenBridgeERC20BurnableHarnessUpgradable")
+        wrappedTokenBridgeFactory = await ethers.getContractFactory("WrappedERC20BurnableBridgeHarnessUpgradable")
         wrappedTokenBridge = await upgrades.deployProxy(wrappedTokenBridgeFactory, [wrappedTokenEndpoint.target], { kind: "uups" })
 
         const ERC20Factory = await ethers.getContractFactory("MintableERC20Mock")

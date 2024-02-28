@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {WrappedTokenBridgeERC20BurnableUpgradable} from "../WrappedTokenBridgeERC20BurnableUpgradable.sol";
+import {WrappedERC20BurnableBridgeUpgradable} from "../WrappedERC20BurnableBridgeUpgradable.sol";
 
 /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
-contract WrappedTokenBridgeERC20BurnableHarnessUpgradable is WrappedTokenBridgeERC20BurnableUpgradable {
+contract WrappedERC20BurnableBridgeHarnessUpgradable is WrappedERC20BurnableBridgeUpgradable {
 
     function initialize(address _endpoint) override external initializer {
         __WrappedTokenBridgeBaseUpgradable_init(_endpoint);

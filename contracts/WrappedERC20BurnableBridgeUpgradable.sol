@@ -6,7 +6,7 @@ import {WrappedTokenBridgeUpgradable} from "./WrappedTokenBridgeUpgradable.sol";
 import {IERC20Burnable} from "./interfaces/IERC20Burnable.sol";
 
 /// @dev Mints a wrapped token when a message received from a remote chain and burns a wrapped token when bridging to a remote chain
-contract WrappedTokenBridgeERC20BurnableUpgradable is WrappedTokenBridgeUpgradable {
+contract WrappedERC20BurnableBridgeUpgradable is WrappedTokenBridgeUpgradable {
     /// @notice Bridges `localToken` to the remote chain
     /// @dev Burns wrapped tokens and sends LZ message to the remote chain to unlock original tokens
     function bridge(address localToken, uint16 remoteChainId, uint amount, address to, bool unwrapWeth, LzLib.CallParams calldata callParams, bytes memory adapterParams) external payable nonReentrant override whenNotPaused {
