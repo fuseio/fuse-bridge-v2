@@ -4,9 +4,9 @@ pragma solidity ^0.8.17;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
-  * @title Interface for burnable and mintable ERC20 complying
-  with the interface of the classic native-to-erc20 bridge. original interface:
-  https://github.com/fuseio/fuse-bridge/blob/master/native-to-erc20/contracts/contracts/interfaces/IBurnableMintableERC677Token.sol
+  * @title ERC20 interface that comply with the Fuse token of the
+    classic native-to-erc20 bridge. Original bridged token:
+    https://github.com/fuseio/fuse-bridge/blob/c034421baba4d38989451497dc5b9ea4f81c8b5e/native-to-erc20/contracts/contracts/ERC677BridgeToken.sol#L14
  */
 interface IERC20Burnable is IERC20 {
     function mint(address _to, uint _amount) external;
