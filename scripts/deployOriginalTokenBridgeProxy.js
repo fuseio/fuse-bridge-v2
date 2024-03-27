@@ -6,7 +6,7 @@ const FOREIGN_CHAIN_ID = 138 // <-- Replace with the chain ID of the foreign cha
 const WETH_ADDRESS = "" // <-- Replace with the address of the WETH token on the source chain
 
 async function main() {
-    const Bridge = await ethers.getContractFactory("contracts/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
+    const Bridge = await ethers.getContractFactory("contracts/bridges/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
     const bridge = await upgrades.deployProxy(Bridge, [ENDPOINT_ADDRESS, FOREIGN_CHAIN_ID, WETH_ADDRESS], { kind: "uups" })
     console.log("Deploying bridge...")
     await bridge.waitForDeployment()

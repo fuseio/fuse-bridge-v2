@@ -39,7 +39,11 @@ function getMnemonic(networkName) {
 }
 
 function accounts(chainKey) {
-  return { mnemonic: getMnemonic(chainKey) }
+  if (process.env.PRIVATE_KEY) {
+    return [`0x${process.env.PRIVATE_KEY}`]
+  } else {
+    return { mnemonic: getMnemonic(chainKey) }
+  }
 }
 
 // You need to export an object to set up your config
@@ -115,6 +119,11 @@ module.exports = {
     fuse: {
       url: `https://rpc.fuse.io`,
       chainId: 122,
+      accounts: accounts(),
+    },
+    spark: {
+      url: `https://rpc.fusespark.io`,
+      chainId: 123,
       accounts: accounts(),
     },
     gnosis: {

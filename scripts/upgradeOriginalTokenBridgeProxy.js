@@ -2,7 +2,7 @@
 const { ethers, upgrades } = require("hardhat")
 
 async function main() {
-    const BridgeV2 = await ethers.getContractFactory("contracts/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
+    const BridgeV2 = await ethers.getContractFactory("contracts/bridges/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
     console.log("Deploying bridge...")
     const bridge = await BridgeV2.deploy()
     const tx = await bridge.waitForDeployment()
