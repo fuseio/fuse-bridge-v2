@@ -1,6 +1,6 @@
 const { createProvider } = require("hardhat/internal/core/providers/construction");
 const { DeploymentsManager } = require("hardhat-deploy/dist/src/DeploymentsManager")
-const { getDeploymentAddresses } = require("./readStatic")
+const bridges = require("../constants/bridges.json")
 
 const getDeploymentManager = (hre, networkName) => {
     const network = {
@@ -33,28 +33,28 @@ const providerByNetwork = {}
 const getProvider = (hre, network) => {
     if (!providerByNetwork[network]) {
         const networkUrl = hre.config.networks[network].url      
-        providerByNetwork[network] = new ethers.providers.JsonRpcProvider(networkUrl)
+        providerByNetwork[network] = new ethers.JsonRpcProvider(networkUrl)
     }
     return providerByNetwork[network]
 }
 
-const deploymentAddresses = {}
 const getDeploymentAddress = (network, contractName) => {
-    const key = `${network}-${contractName}`
-    if (!deploymentAddresses[key]) {
-        deploymentAddresses[key] = getDeploymentAddresses(network)[contractName]
-    }
-    if (!deploymentAddresses[key]) {
+    const address =  bridges[network][contractName]
+    if (!address) {
         throw Error(`contract ${key} not found for network: ${network}`)
     }
-    return deploymentAddresses[key]
+    console.log(`${contractName} contract address on ${network} is ${address}`)
+    return address
 }
 
 const contracts = {}
 const getContract = async (hre, network, contractName) => {
+    
     const key = `${network}-${contractName}`
+    console.log(key)
     if (!contracts[key]) {
         const contractAddress = getDeploymentAddress(network, contractName)
+        console.log(contractAddress)
         const provider = getProvider(hre, network)
         const contractFactory = await getContractFactory(hre, contractName)
         const contract = contractFactory.attach(contractAddress)
@@ -72,7 +72,7 @@ const getContractFactory = async (hre, contractName) => {
     return contractFactories[contractName]
 }
 
-const getWallet = (index) => ethers.Wallet.fromMnemonic(process.env.MNEMONIC, `m/44'/60'/0'/0/${index}`)
+const getWallet = () => new ethers.Wallet(process.env.PRIVATE_KEY)
 
 const connectedWallets = {}
 const getConnectedWallet = (hre, network, walletIndex) => {

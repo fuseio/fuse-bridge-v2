@@ -1,19 +1,30 @@
-// scripts/deployOriginalTokenBridgeProxy.js
-const { ethers, upgrades } = require("hardhat")
+// run as:
+// npx hardhat ./scripts/deployOriginalTokenBridgeProxy.js --network $NETWORK
+const { upgrades } = require("hardhat")
 
-const ENDPOINT_ADDRESS = "" // <-- Replace with the address of the endpoint you want to use
-const FOREIGN_CHAIN_ID = 138 // <-- Replace with the chain ID of the foreign chain
-const WETH_ADDRESS = "" // <-- Replace with the address of the WETH token on the source chain
+const LZ_ENDPOINTS = require("../constants/layerzeroEndpoints.json")
+const REMOTE_CHAIN_IDS = require("../constants/remoteChainIds.json")
+const WETHS = require("../constants/weths.json")
 
-// run as npx hardhat run  ./scripts/deployOriginalTokenBridgeProxy.js --network $NETWORK
+const hre = require("hardhat");
 
 async function main() {
+    const { network } = hre;
+    const lzEndpointAddress = LZ_ENDPOINTS[network.name]
+	console.log(`[${network.name}] Endpoint Address: ${lzEndpointAddress}`)
+
+	const remoteChainId = REMOTE_CHAIN_IDS[network.name]
+	console.log(`[${network.name}] Remote Chain Id: ${remoteChainId}`)
+
+	const weth = WETHS[network.name]
+	console.log(`[${network.name}] WETH Address: ${weth}`)
+
     const Bridge = await ethers.getContractFactory("contracts/bridges/OriginalTokenBridgeUpgradable.sol:OriginalTokenBridgeUpgradable")
-    const bridge = await upgrades.deployProxy(Bridge, [ENDPOINT_ADDRESS, FOREIGN_CHAIN_ID, WETH_ADDRESS], { kind: "uups" })
+    const bridge = await upgrades.deployProxy(Bridge, [lzEndpointAddress, remoteChainId, weth], { kind: "uups" })
     console.log("Deploying bridge...")
     await bridge.waitForDeployment()
     console.log(bridge.deploymentTransaction().hash)
-    console.log("Bridge deployed to:", await bridge.getAddress())
+    console.log(`[${network.name}] Bridge deployed to:`, await bridge.getAddress())
 }
 
 main()

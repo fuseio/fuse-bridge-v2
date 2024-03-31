@@ -4,5 +4,6 @@
 	"polygon": "https://api.polygonscan.com/api",
 	"coredao": "https://openapi.coredao.org/api",
 	"fuse": "https://explorer.fuse.io/api",
+	"spark": "https://explorer.fusespark.io/api",
 	"gnosis": "https://api.gnosisscan.io/api"
 }
