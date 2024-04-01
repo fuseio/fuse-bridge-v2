@@ -5,5 +5,6 @@
 	"coredao": "https://openapi.coredao.org/api",
 	"fuse": "https://explorer.fuse.io/api",
 	"spark": "https://explorer.fusespark.io/api",
-	"gnosis": "https://api.gnosisscan.io/api"
+	"gnosis": "https://api.gnosisscan.io/api",
+	"bsc-testnet": "https://testnet.bscscan.com/api"
 }

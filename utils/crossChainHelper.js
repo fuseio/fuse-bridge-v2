@@ -39,17 +39,17 @@ const getProvider = (hre, network) => {
 }
 
 const getDeploymentAddress = (network, contractName) => {
+    console.log(`[${network}] looking for address of ${contractName} contract`)
     const address =  bridges[network][contractName]
     if (!address) {
-        throw Error(`contract ${key} not found for network: ${network}`)
+        throw Error(`[${network}] contract ${key} not found for network: ${network}`)
     }
-    console.log(`${contractName} contract address on ${network} is ${address}`)
+    console.log(`[${network}] ${contractName} contract address  is ${address}`)
     return address
 }
 
 const contracts = {}
 const getContract = async (hre, network, contractName) => {
-    
     const key = `${network}-${contractName}`
     console.log(key)
     if (!contracts[key]) {

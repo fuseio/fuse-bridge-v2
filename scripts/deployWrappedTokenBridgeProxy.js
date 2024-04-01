@@ -11,7 +11,7 @@ const process = require("process")
 
 const getBridgeContract = (bridgeType) => {
     switch (bridgeType) {
-        case "ec20":
+        case "erc20":
             return ethers.getContractFactory("contracts/bridges/WrappedTokenBridgeUpgradable.sol:WrappedTokenBridgeUpgradable")
         case "erc20-burnable":
             return ethers.getContractFactory("contracts/bridges/WrappedERC20BurnableMintableBridgeUpgradable.sol:WrappedERC20BurnableMintableBridgeUpgradable")

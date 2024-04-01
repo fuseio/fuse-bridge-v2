@@ -13,6 +13,16 @@ task("setTrustedRemote", "calls setTrustedRemoteAddress in OriginalTokenBridge o
 	.addParam("wrappedNetwork", "name of the network where WrappedTokenBridge is deployed")
 // npx hardhat setTrustedRemote --original-networks "goerli,bsc-testnet,mumbai" --wrapped-network "coredao-testnet"
 
+task("setUseCustomAdapter", "calls setTrustedRemoteAddress in OriginalTokenBridge on multiple networks and in WrappedTokenBridge on a wrapped token chain", require("./setUseCustomAdapter"))
+	.addParam("originalNetworks", "comma separated list of networks where OriginalTokenBridge contract is deployed")
+	.addParam("wrappedNetwork", "name of the network where WrappedTokenBridge is deployed")
+// npx hardhat setUseCustomAdapter --original-networks "goerli,bsc-testnet,mumbai" --wrapped-network "coredao-testnet"
+
+task("setMinDstGas", "calls setTrustedRemoteAddress in OriginalTokenBridge on multiple networks and in WrappedTokenBridge on a wrapped token chain", require("./setMinDstGas"))
+	.addParam("originalNetworks", "comma separated list of networks where OriginalTokenBridge contract is deployed")
+	.addParam("wrappedNetwork", "name of the network where WrappedTokenBridge is deployed")
+// npx hardhat setMinDstGas --original-networks "goerli,bsc-testnet,mumbai" --wrapped-network "coredao-testnet"
+
 task("registerToken", "calls registerToken in OriginalTokenBridge and WrappedTokenBridge", require("./registerToken"))
 	.addParam("originalNetwork", "name of the network where OriginalTokenBridge is deployed")
 	.addParam("wrappedNetwork", "name of the network where WrappedTokenBridge is deployed")
