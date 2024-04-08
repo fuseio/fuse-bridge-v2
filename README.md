@@ -83,9 +83,13 @@ WrappedTokenBridge: `0xEEd9154F63f6F0044E6b00dDdEFD895b5B4ED580`<br>
 OriginalTokenBridge: `0x081dF5af5d022D4A4a4520D4D0D336B8432fDBBb`<br>
 WrappedTokenBridge: `0xEEd9154F63f6F0044E6b00dDdEFD895b5B4ED580`<br>
 
+### BSC
+WrappedTokenBridge: `0x6C460c18459907c5b743188eeA35896BAFe9fd74`<br>
+
 ### Fuse
 OriginalTokenBridge(to Polygon): `0x36207130CF22d8C54842569A32a0Cd5D711f3580`<br>
 OriginalTokenBridge(to Gnosis): `0xc465107230c21f154627e017b6727A3C18984B02`<br>
 OriginalTokenBridge(to Optimism): `0xeC3FD32cd5389FbC581427A648d6dc1bc5cfFE3B`<br>
 OriginalTokenBridge(to Arbitrum): `0x56dF61E9f39C75e2d84C05753557bEBB9841Eb5B`<br>
+OriginalTokenBridge(to BSC): `0xd616e2825dC094460cfEfc3d54ed75A6d34a7065`<br>
 WrappedTokenBridge: `0x353af4878d7452e974538706273887F7ED90Da47`<br>

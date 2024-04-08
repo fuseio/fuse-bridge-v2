@@ -5,8 +5,7 @@ module.exports = async function (taskArgs, hre) {
 	const signers = await ethers.getSigners()
 	const owner = signers[0]
 	const amount = ethers.parseEther(taskArgs.amount)
-	// const bridge = await ethers.getContract("OriginalTokenBridgeUpgradable")
-	console.log(hre.network.name)
+
 	const bridge = await getWalletContract(hre, hre.network.name, "OriginalTokenBridgeUpgradable")
 
 	const nativeFee = (await bridge.estimateBridgeFee(false, "0x")).nativeFee
