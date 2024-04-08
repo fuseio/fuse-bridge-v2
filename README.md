@@ -64,6 +64,7 @@ Now populate the Bridge address on Fuse in the env file and proceed.
 
 New tokens can be added by adding them in constants and updating the list in `deploy/WrappedERC20.js`
 
+Also Ppease check `scripts/deploy-example.sh` how to deploy and setup the bridge
 
 ## Deployed Proxy Contracts
 
