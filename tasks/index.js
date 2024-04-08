@@ -4,9 +4,9 @@ task("deployBridges", "deploys OriginalTokenBridge to multiple networks and Wrap
 // npx hardhat deployBridges --original-networks "goerli,bsc-testnet,mumbai" --wrapped-network "coredao-testnet"
 // npx hardhat deployBridges --original-networks "ethereum,bsc,polygon" --wrapped-network "coredao"
 
-task("deployMockTokens", "deploys Mock tokens to multiple networks", require("./deployMockTokens"))
-	.addParam("originalNetworks", "comma separated list of networks where mock tokens contract is deployed")
-// npx hardhat deployTestTokens --original-networks "goerli,bsc-testnet,mumbai"
+task("deployTokens", "deploys Mock tokens to multiple networks", require("./deployTokens"))
+	.addParam("wrappedTokens", "comma separated list of tokens to deploy")
+// npx hardhat  "goerli,bsc-testnet,mumbai" --wrapped-tokens "WETH,USDC,USDT" --network "coredao"
 
 task("setTrustedRemote", "calls setTrustedRemoteAddress in OriginalTokenBridge on multiple networks and in WrappedTokenBridge on a wrapped token chain", require("./setTrustedRemote"))
 	.addParam("originalNetworks", "comma separated list of networks where OriginalTokenBridge contract is deployed")

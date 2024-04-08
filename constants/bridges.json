@@ -1,8 +1,9 @@
 {
   "bsc-testnet": {
-    "WrappedTokenBridgeUpgradable": "0xa573E9ef62C2C521c6490f2627FF8b25026A9f79"
+    "WrappedTokenBridgeUpgradable": "0x5007D52fE113339F0F33C3e7D1f5C7D6d9792481",
+    "WrappedERC20": "0x6898C2332e3bc53aa8B867958104338384822665"
   },
   "spark": {
-    "OriginalTokenBridgeUpgradable": "0x192eFEF86Ada3b7AaA7978c39BFcA6c8e34f8318"
+    "OriginalTokenBridgeUpgradable": "0xaED97f2DEF294d04b6DD3D2256F3e7b9c9240947"
   }
 }

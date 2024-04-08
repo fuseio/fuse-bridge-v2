@@ -9,17 +9,18 @@ module.exports = async function (taskArgs, hre) {
 	console.log(hre.network.name)
 	const bridge = await getWalletContract(hre, hre.network.name, "OriginalTokenBridgeUpgradable")
 
-	// const nativeFee = (await bridge.estimateBridgeFee(false, "0x")).nativeFee
-	// const increasedNativeFee = nativeFee.mul(5).div(4) // 20% increase
+	const nativeFee = (await bridge.estimateBridgeFee(false, "0x")).nativeFee
+	const increasedNativeFee = nativeFee * 5n / 4n // 20% increase
 	const callParams = {
 		refundAddress: owner.address,
 		zroPaymentAddress: ethers.ZeroAddress
 	}
-	// console.log(`Gas price: ${increasedNativeFee}`)
+	console.log(`Gas price: ${increasedNativeFee}`)
 	console.log({ 
 		callParams
 	})
-	tx = await bridge.bridgeNative(amount, owner.address, callParams, "97be339d00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000218711a00", { value: amount + amount })
+	
+	tx = await bridge.bridgeNative(amount, owner.address, callParams, "0x0001000000000000000000000000000000000000000000000000000000000003d090", { value: amount * 50n, gasLimit: 500000, maxFeePerGas: 20000000000, maxPriorityFeePerGas: 15000000000 })
 	await tx.wait()
 	console.log(`Bridged ${tx.hash}`)
 }

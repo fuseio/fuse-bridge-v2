@@ -11,6 +11,7 @@ require('./tasks');
 require('@typechain/hardhat')
 require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-chai-matchers')
+require("@nomicfoundation/hardhat-verify");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -76,6 +77,12 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0,    // wallet address 0, of the mnemonic in .env
+    }
+  },
+
+  etherscan: {
+    apiKey: {
+      bscTestnet: process.env.BSC_SCAN_API_KEY
     }
   },
 

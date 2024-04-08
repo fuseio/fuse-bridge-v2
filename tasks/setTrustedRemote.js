@@ -1,4 +1,5 @@
 const { getWalletContract } = require("../utils/crossChainHelper")
+const { getTxHashLink } = require("../utils/print")
 const CHAIN_IDS = require("../constants/chainIds.json")
 
 module.exports = async function (taskArgs, hre) {
@@ -18,10 +19,10 @@ module.exports = async function (taskArgs, hre) {
 
 		console.log(`\n[${originalNetworks[i]}] OriginalTokenBridge at ${originalTokenBridge.target} calling setTrustedRemoteAddress(${wrappedTokenChainId}, ${wrappedTokenBridge.target})`)
 		let tx = await originalTokenBridge.setTrustedRemoteAddress(wrappedTokenChainId, wrappedTokenBridge.target, {gasPrice: increasedGasPrice})
-		console.log(tx.hash)
+		console.log(getTxHashLink(originalNetworks[i], tx.hash))
 		
 		console.log(`[${wrappedNetwork}] WrappedTokenBridge at ${wrappedTokenBridge.target} calling setTrustedRemoteAddress(${originalTokenChainId}, ${originalTokenBridge.target})`)
 		tx = await wrappedTokenBridge.setTrustedRemoteAddress(originalTokenChainId, originalTokenBridge.target)
-		console.log(tx.hash)
+		console.log(getTxHashLink(wrappedNetwork, tx.hash))
 	}
 }
