@@ -5,15 +5,17 @@ const { upgrades } = require("hardhat")
 const LZ_ENDPOINTS = require("../constants/layerzeroEndpoints.json")
 const REMOTE_CHAIN_IDS = require("../constants/remoteChainIds.json")
 const WETHS = require("../constants/weths.json")
+const CHAIN_IDS = require("../constants/chainIds.json")
 
 const hre = require("hardhat");
 
 async function main() {
+    const wrappedNetwork = process.env.WRAPPED_NETWORK
     const { network } = hre;
     const lzEndpointAddress = LZ_ENDPOINTS[network.name]
 	console.log(`[${network.name}] Endpoint Address: ${lzEndpointAddress}`)
 
-	const remoteChainId = REMOTE_CHAIN_IDS[network.name]
+	const remoteChainId = wrappedNetwork ? CHAIN_IDS[wrappedNetwork] : REMOTE_CHAIN_IDS[network.name]
 	console.log(`[${network.name}] Remote Chain Id: ${remoteChainId}`)
 
 	const weth = WETHS[network.name]
