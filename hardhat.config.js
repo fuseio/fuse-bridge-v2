@@ -11,6 +11,7 @@ require('./tasks');
 require('@typechain/hardhat')
 require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-chai-matchers')
+require("@nomicfoundation/hardhat-verify");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -39,7 +40,11 @@ function getMnemonic(networkName) {
 }
 
 function accounts(chainKey) {
-  return { mnemonic: getMnemonic(chainKey) }
+  if (process.env.PRIVATE_KEY) {
+    return [`0x${process.env.PRIVATE_KEY}`]
+  } else {
+    return { mnemonic: getMnemonic(chainKey) }
+  }
 }
 
 // You need to export an object to set up your config
@@ -72,6 +77,13 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0,    // wallet address 0, of the mnemonic in .env
+    }
+  },
+
+  etherscan: {
+    apiKey: {
+      bscTestnet: process.env.BSC_SCAN_API_KEY,
+      bsc: process.env.BSC_SCAN_API_KEY
     }
   },
 
@@ -115,6 +127,11 @@ module.exports = {
     fuse: {
       url: `https://rpc.fuse.io`,
       chainId: 122,
+      accounts: accounts(),
+    },
+    spark: {
+      url: `https://rpc.fusespark.io`,
+      chainId: 123,
       accounts: accounts(),
     },
     gnosis: {

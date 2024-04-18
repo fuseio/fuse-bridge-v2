@@ -5,5 +5,7 @@
   "arbitrum":         110,
   "optimism":         111,
   "fuse":             138,
-  "gnosis":           145
+  "gnosis":           145,
+  "spark":            10138,
+  "bsc-testnet":      10102
 }
