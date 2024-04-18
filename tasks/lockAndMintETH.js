@@ -1,4 +1,5 @@
 const { getWalletContract } = require("../utils/crossChainHelper")
+const { getTxHashLink } = require("../utils/print")
 
 module.exports = async function (taskArgs, hre) {
 	console.log(`Locking and minting ${taskArgs.amount} ETH...`)
@@ -18,8 +19,11 @@ module.exports = async function (taskArgs, hre) {
 	console.log({ 
 		callParams
 	})
-	
-	tx = await bridge.bridgeNative(amount, owner.address, callParams, "0x0001000000000000000000000000000000000000000000000000000000000003d090", { value: amount * 50n, gasLimit: 500000, maxFeePerGas: 20000000000, maxPriorityFeePerGas: 15000000000 })
+	// without EIP 1559 (Fuse)
+	tx = await bridge.bridgeNative(amount, owner.address, callParams, "0x0001000000000000000000000000000000000000000000000000000000000003d090", { value: amount + increasedNativeFee, gasLimit: 500000 })
+
+	// with EIP 1559 (Spark)
+	// tx = await bridge.bridgeNative(amount, owner.address, callParams, "0x0001000000000000000000000000000000000000000000000000000000000003d090", { value: amount + increasedNativeFee, gasLimit: 500000, maxFeePerGas: 20000000000, maxPriorityFeePerGas: 15000000000 })
 	await tx.wait()
-	console.log(`Bridged ${tx.hash}`)
+	console.log(`Bridged ${getTxHashLink(hre.network.name, tx.hash)}`)
 }

@@ -1,4 +1,11 @@
 {
+  "fuse": {
+    "OriginalTokenBridgeUpgradable": "0x6bd341B6C7d6123D28d3DDee6A65d441DbAC1E90"
+  },
+  "bsc": {
+    "WrappedTokenBridgeUpgradable": "0xADef29442A11ad9308aC5D012965c887Cf2A53D3",
+    "WrappedERC20": "0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3"
+  },
   "bsc-testnet": {
     "WrappedTokenBridgeUpgradable": "0x6C460c18459907c5b743188eeA35896BAFe9fd74",
     "WrappedERC20": "0x58C70f0e6777801edB1bB66f33D3456df4F6F051"

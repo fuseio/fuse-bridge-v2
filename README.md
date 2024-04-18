@@ -58,13 +58,13 @@ Populate the env MNENOIC in the env file and run the following commands in order
 
 Now populate the Bridge address on Fuse in the env file and proceed.
 
-2. `npx hardhat deployTestTokens --original-networks "fuse"`
+2. `npx hardhat deployTokens --original-networks "fuse"`
 3. `npx hardhat setTrustedRemote --original-networks "gnosis" --wrapped-network "fuse"`
 4. `npx hardhat registerTokens --original-networks "gnosis" --wrapped-network "fuse" --tokens "USDC,USDT,WETH"`
 
 New tokens can be added by adding them in constants and updating the list in `deploy/WrappedERC20.js`
 
-Also Ppease check `scripts/deploy-example.sh` how to deploy and setup the bridge
+To see the whole process of deploying a bridge, please check the `scrips/deployments` folders
 
 ## Deployed Contracts
 
@@ -84,21 +84,23 @@ WrappedTokenBridge: `0xEEd9154F63f6F0044E6b00dDdEFD895b5B4ED580`- mints and burn
 OriginalTokenBridge: `0x081dF5af5d022D4A4a4520D4D0D336B8432fDBBb` - locks erc20 from Arbitrum to Fuse<br>
 WrappedTokenBridge: `0xEEd9154F63f6F0044E6b00dDdEFD895b5B4ED580`- mints and burns Fuse tokens<br>
 
-### BNB
-OriginalTokenBridge: `0x081dF5af5d022D4A4a4520D4D0D336B8432fDBBb` - locks erc20 from BNB to Fuse<br>
+### BSC
+OriginalTokenBridge: `0x081dF5af5d022D4A4a4520D4D0D336B8432fDBBb` - locks erc20 from BSC to Fuse<br>
+WrappedTokenBridge: `0xADef29442A11ad9308aC5D012965c887Cf2A53D3` - mints and burns Fuse tokens<br>
 
 ### Fuse
 OriginalTokenBridge(to Polygon): `0x36207130CF22d8C54842569A32a0Cd5D711f3580`- Fuse (holds WUFSE) <br> 
 OriginalTokenBridge(to Gnosis): `0xc465107230c21f154627e017b6727A3C18984B02` - Fuse (holds WUFSE) <br>
 OriginalTokenBridge(to Optimism): `0xeC3FD32cd5389FbC581427A648d6dc1bc5cfFE3B`- Fuse (holds WUFSE) <br>
 OriginalTokenBridge(to Arbitrum): `0x56dF61E9f39C75e2d84C05753557bEBB9841Eb5B`- Fuse (holds WUFSE) <br>
+OriginalTokenBridge(to BSC): `0x6bd341B6C7d6123D28d3DDee6A65d441DbAC1E90`- Fuse (holds WUFSE) <br>
 WrappedTokenBridge: `0x353af4878d7452e974538706273887F7ED90Da47` - mints and burns erc20 from all the networks
 <br> 
 
 ## Deployed Contracts - Testnet
 
-### BNB-testnet
+### BSC-testnet
 WrappedTokenBridge: `0x6C460c18459907c5b743188eeA35896BAFe9fd74`<br>
 
 ### Spark
-OriginalTokenBridge(to BNB): `0xd616e2825dC094460cfEfc3d54ed75A6d34a7065`<br>
+OriginalTokenBridge(to BSC): `0xd616e2825dC094460cfEfc3d54ed75A6d34a7065`<br>
