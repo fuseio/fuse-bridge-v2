@@ -54,6 +54,18 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         emit RegisterToken(localToken, remoteChainId, remoteToken);
     }
 
+    function updateToken(address localToken, uint16 remoteChainId, address remoteToken) external onlyOwner {
+        require(localToken != address(0), "WrappedTokenBridge: invalid local token");
+        require(remoteToken != address(0), "WrappedTokenBridge: invalid remote token");
+        require(localToRemote[localToken][remoteChainId] != address(0) && remoteToLocal[remoteToken][remoteChainId] != address(0), "WrappedTokenBridge: token not registered");
+        address oldRemoteToken = localToRemote[localToken][remoteChainId];
+        require(totalValueLocked[remoteChainId][oldRemoteToken] == 0, "WrappedTokenBridge: token has locked value");
+
+        localToRemote[localToken][remoteChainId] = remoteToken;
+        remoteToLocal[remoteToken][remoteChainId] = localToken;
+        emit RegisterToken(localToken, remoteChainId, remoteToken);
+    }
+
     function setWithdrawalFeeBps(uint16 _withdrawalFeeBps) external onlyOwner {
         require(_withdrawalFeeBps < TOTAL_BPS, "WrappedTokenBridge: invalid withdrawal fee bps");
         withdrawalFeeBps = _withdrawalFeeBps;
