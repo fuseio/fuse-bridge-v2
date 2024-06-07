@@ -80,6 +80,25 @@ describe("OriginalTokenBridge", () => {
         })
     })
 
+    describe("deregisterToken", () => {
+        beforeEach(async () => {
+            await originalTokenBridge.registerToken(originalToken.target, sharedDecimals)
+        })
+
+        it("reverts if token is not registered", async () => {
+            await expect(originalTokenBridge.deregisterToken(weth.target)).to.be.revertedWith("OriginalTokenBridge: token is not registered")
+        })
+
+        it("reverts when called by non owner", async () => {
+            await expect(originalTokenBridge.connect(user).deregisterToken(originalToken.target)).to.be.revertedWith("Ownable: caller is not the owner")
+        })
+
+        it("deregisters token", async () => {
+            await originalTokenBridge.deregisterToken(originalToken.target)
+            expect(await originalTokenBridge.supportedTokens(originalToken.target)).to.be.false
+        })
+    })
+
     describe("setRemoteChainId", () => {
         const newRemoteChainId = 2
         it("reverts when called by non owner", async () => {
