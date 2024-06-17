@@ -144,7 +144,6 @@ module.exports = {
       chainId: 1116,
       accounts: accounts(),
     },
-
     goerli: {
       url: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
       chainId: 5,
@@ -183,6 +182,11 @@ module.exports = {
     'coredao-testnet': {
       url: 'https://rpc.test.btcs.network/',
       chainId: 1115,
+      accounts: accounts(),
+    },
+    'base':{
+      url: 'https://base.blockpi.network/v1/rpc/public',
+      chainId: 8453,
       accounts: accounts(),
     }
   }
