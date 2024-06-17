@@ -7,5 +7,6 @@
   "fuse":             138,
   "gnosis":           145,
   "spark":            10138,
-  "bsc-testnet":      10102
+  "bsc-testnet":      10102,
+  "base":             184
 }
