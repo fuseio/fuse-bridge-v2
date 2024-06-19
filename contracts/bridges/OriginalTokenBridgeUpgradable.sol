@@ -33,6 +33,7 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     event ReceiveToken(address token, address to, uint amount);
     event SetRemoteChainId(uint16 remoteChainId);
     event RegisterToken(address token);
+    event DeregisterToken(address token);
     event WithdrawFee(address indexed token, address to, uint amount);
     event Paused(address account);
     event Unpaused(address account);
@@ -64,6 +65,12 @@ contract OriginalTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         emit RegisterToken(token);
     }
 
+    function deregisterToken(address token) external onlyOwner {
+        require(supportedTokens[token], "OriginalTokenBridge: token is not registered");
+        supportedTokens[token] = false;
+        LDtoSDConversionRate[token] = 0;
+        emit DeregisterToken(token);
+    }
     function setRemoteChainId(uint16 _remoteChainId) external onlyOwner {
         remoteChainId = _remoteChainId;
         emit SetRemoteChainId(_remoteChainId);
