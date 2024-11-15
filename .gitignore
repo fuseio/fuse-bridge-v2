@@ -111,5 +111,6 @@ cache/
 artifacts/
 .openzeppelin/
 typechain-types/
+.vscode
 
 

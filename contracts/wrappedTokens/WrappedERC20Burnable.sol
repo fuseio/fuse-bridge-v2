@@ -36,7 +36,7 @@ contract WrappedERC20Burnable is ERC20Burnable {
 
     /// @notice Creates `amount` tokens and assigns them to `account`, increasing the total supply
     /// @dev called only by the bridge
-    function mint(address _to, uint _amount) external virtual onlyBridge {
+    function mint(address _to, uint256 _amount) external virtual onlyBridge {
         _mint(_to, _amount);
     }
 }

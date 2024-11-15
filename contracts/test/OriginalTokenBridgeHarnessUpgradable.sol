@@ -5,8 +5,7 @@ import {OriginalTokenBridgeUpgradable} from "../bridges/OriginalTokenBridgeUpgra
 
 /// @dev used only in unit tests to call internal _nonblockingLzReceive
 contract OriginalTokenBridgeHarnessUpgradable is OriginalTokenBridgeUpgradable {
-      
-    function initialize(address _endpoint, uint16 _remoteChainId, address _weth) override external initializer {
+    function initialize(address _endpoint, uint16 _remoteChainId, address _weth) external override initializer {
         __OriginalTokenBridgeBaseUpgradable_init(_endpoint, _remoteChainId, _weth);
     }
 

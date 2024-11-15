@@ -7,5 +7,5 @@ interface IWETH {
     function deposit() external payable;
 
     /// @notice Withdraw wrapped ether to get ether
-    function withdraw(uint) external;
+    function withdraw(uint256) external;
 }

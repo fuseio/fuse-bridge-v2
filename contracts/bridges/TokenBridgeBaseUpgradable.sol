@@ -2,11 +2,16 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import {NonblockingLzAppUpgradeable} from "@layerzerolabs/solidity-examples/contracts/contracts-upgradable/lzApp/NonblockingLzAppUpgradeable.sol";
+import {NonblockingLzAppUpgradeable} from
+    "@layerzerolabs/solidity-examples/contracts/contracts-upgradable/lzApp/NonblockingLzAppUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @dev An abstract contract containing a common functionality used by OriginalTokenBridge and WrappedTokenBridge
-abstract contract TokenBridgeBaseUpgradable is NonblockingLzAppUpgradeable, ReentrancyGuardUpgradeable, UUPSUpgradeable {
+abstract contract TokenBridgeBaseUpgradable is
+    NonblockingLzAppUpgradeable,
+    ReentrancyGuardUpgradeable,
+    UUPSUpgradeable
+{
     /// @notice A packet type used to identify messages requesting minting of wrapped tokens
     uint8 public constant PT_MINT = 0;
 
