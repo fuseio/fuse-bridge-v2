@@ -5,8 +5,7 @@ import {WrappedERC20BurnableMintableBridgeUpgradable} from "../bridges/WrappedER
 
 /// @dev Locks an ERC20 on the source chain and sends LZ message to the remote chain to mint a wrapped token
 contract WrappedERC20BurnableMintableBridgeHarnessUpgradable is WrappedERC20BurnableMintableBridgeUpgradable {
-
-    function initialize(address _endpoint) override external initializer {
+    function initialize(address _endpoint) external override initializer {
         __WrappedTokenBridgeBaseUpgradable_init(_endpoint);
     }
 

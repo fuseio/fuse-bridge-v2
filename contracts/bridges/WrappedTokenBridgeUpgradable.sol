@@ -24,12 +24,12 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
 
     /// @notice Total value bridged per token and remote chains
     /// @dev [remote chain] => [remote token] => [bridged amount]
-    mapping(uint16 => mapping(address => uint)) public totalValueLocked;
+    mapping(uint16 => mapping(address => uint256)) public totalValueLocked;
 
     bool private _paused;
 
-    event WrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint amount);
-    event UnwrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint amount);
+    event WrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint256 amount);
+    event UnwrapToken(address localToken, address remoteToken, uint16 remoteChainId, address to, uint256 amount);
     event RegisterToken(address localToken, uint16 remoteChainId, address remoteToken);
     event SetWithdrawalFeeBps(uint16 withdrawalFeeBps);
     event Paused(address account);
@@ -47,7 +47,11 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
     function registerToken(address localToken, uint16 remoteChainId, address remoteToken) external onlyOwner {
         require(localToken != address(0), "WrappedTokenBridge: invalid local token");
         require(remoteToken != address(0), "WrappedTokenBridge: invalid remote token");
-        require(localToRemote[localToken][remoteChainId] == address(0) && remoteToLocal[remoteToken][remoteChainId] == address(0), "WrappedTokenBridge: token already registered");
+        require(
+            localToRemote[localToken][remoteChainId] == address(0)
+                && remoteToLocal[remoteToken][remoteChainId] == address(0),
+            "WrappedTokenBridge: token already registered"
+        );
 
         localToRemote[localToken][remoteChainId] = remoteToken;
         remoteToLocal[remoteToken][remoteChainId] = localToken;
@@ -60,7 +64,11 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
         emit SetWithdrawalFeeBps(_withdrawalFeeBps);
     }
 
-    function estimateBridgeFee(uint16 remoteChainId, bool useZro, bytes calldata adapterParams) external view returns (uint nativeFee, uint zroFee) {
+    function estimateBridgeFee(uint16 remoteChainId, bool useZro, bytes calldata adapterParams)
+        external
+        view
+        returns (uint256 nativeFee, uint256 zroFee)
+    {
         // Only the payload format matters when estimating fee, not the actual data
         bytes memory payload = abi.encode(PT_UNLOCK, address(this), address(this), 0, 0, false);
         return lzEndpoint.estimateFees(remoteChainId, address(this), payload, useZro, adapterParams);
@@ -68,7 +76,15 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
 
     /// @notice Bridges `localToken` to the remote chain
     /// @dev Burns wrapped tokens and sends LZ message to the remote chain to unlock original tokens
-    function bridge(address localToken, uint16 remoteChainId, uint amount, address to, bool unwrapWeth, LzLib.CallParams calldata callParams, bytes memory adapterParams) external payable nonReentrant virtual whenNotPaused {
+    function bridge(
+        address localToken,
+        uint16 remoteChainId,
+        uint256 amount,
+        address to,
+        bool unwrapWeth,
+        LzLib.CallParams calldata callParams,
+        bytes memory adapterParams
+    ) external payable virtual nonReentrant whenNotPaused {
         require(localToken != address(0), "WrappedTokenBridge: invalid token");
         require(to != address(0), "WrappedTokenBridge: invalid to");
         require(amount > 0, "WrappedTokenBridge: invalid amount");
@@ -76,26 +92,37 @@ contract WrappedTokenBridgeUpgradable is TokenBridgeBaseUpgradable {
 
         address remoteToken = localToRemote[localToken][remoteChainId];
         require(remoteToken != address(0), "WrappedTokenBridge: token is not supported");
-        require(totalValueLocked[remoteChainId][remoteToken] >= amount, "WrappedTokenBridge: insufficient liquidity on the destination");
+        require(
+            totalValueLocked[remoteChainId][remoteToken] >= amount,
+            "WrappedTokenBridge: insufficient liquidity on the destination"
+        );
 
         totalValueLocked[remoteChainId][remoteToken] -= amount;
         IWrappedERC20(localToken).burn(msg.sender, amount);
 
-        uint withdrawalAmount = amount;
+        uint256 withdrawalAmount = amount;
         if (withdrawalFeeBps > 0) {
-            uint withdrawalFee = (amount * withdrawalFeeBps) / TOTAL_BPS;
+            uint256 withdrawalFee = (amount * withdrawalFeeBps) / TOTAL_BPS;
             withdrawalAmount -= withdrawalFee;
         }
 
         bytes memory payload = abi.encode(PT_UNLOCK, remoteToken, to, withdrawalAmount, amount, unwrapWeth);
-        _lzSend(remoteChainId, payload, callParams.refundAddress, callParams.zroPaymentAddress, adapterParams, msg.value);
+        _lzSend(
+            remoteChainId, payload, callParams.refundAddress, callParams.zroPaymentAddress, adapterParams, msg.value
+        );
         emit UnwrapToken(localToken, remoteToken, remoteChainId, to, amount);
     }
 
     /// @notice Receives ERC20 tokens or ETH from the remote chain
     /// @dev Mints wrapped tokens in response to LZ message from the remote chain
-    function _nonblockingLzReceive(uint16 srcChainId, bytes memory, uint64, bytes memory payload) internal virtual override whenNotPaused {
-        (uint8 packetType, address remoteToken, address to, uint amount) = abi.decode(payload, (uint8, address, address, uint));
+    function _nonblockingLzReceive(uint16 srcChainId, bytes memory, uint64, bytes memory payload)
+        internal
+        virtual
+        override
+        whenNotPaused
+    {
+        (uint8 packetType, address remoteToken, address to, uint256 amount) =
+            abi.decode(payload, (uint8, address, address, uint256));
         require(packetType == PT_MINT, "WrappedTokenBridge: unknown packet type");
 
         address localToken = remoteToLocal[remoteToken][srcChainId];
