@@ -1,6 +1,7 @@
 {
   "fuse": {
-    "OriginalTokenBridgeUpgradable": "0x6bd341B6C7d6123D28d3DDee6A65d441DbAC1E90"
+    "OriginalTokenBridgeUpgradable": "0x6bd341B6C7d6123D28d3DDee6A65d441DbAC1E90",
+    "WrappedTokenBridgeUpgradable": "0x353af4878d7452e974538706273887F7ED90Da47"
   },
   "bsc": {
     "WrappedTokenBridgeUpgradable": "0xADef29442A11ad9308aC5D012965c887Cf2A53D3",
